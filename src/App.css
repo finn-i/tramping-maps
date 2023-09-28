@@ -6,3 +6,12 @@
   width: 100%;
   height: 100vh;
 }
+
+.marker-cluster {
+  background-color: #4c8bf5 !important;
+}
+
+.marker-cluster div {
+  background-color: #386cc7 !important;
+  color: #fff !important;
+}
