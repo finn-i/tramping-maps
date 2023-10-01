@@ -1,10 +1,10 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, LayerGroup, LayersControl, Polygon, useMapEvents, Polyline, CircleMarker} from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
 import React, { useState, useEffect } from 'react';
 
-import Huts from './components/Huts'
+import Tracks from './components/Tracks';
+import Huts from './components/Huts';
 
 function App() {
   const LINZTOKEN = "56db51a141764e94b53dfd65c78a2f99";
@@ -98,28 +98,12 @@ function App() {
               })};
             </LayerGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Tracks">
-            <LayerGroup>
-              {tracks && tracks.map((coords, idx) => {
-                return coords.geometry.paths && coords.geometry.paths.map((item, idx2) => {
-                  return <Polyline 
-                    color={"#4c8bf5"} 
-                    weight={2} 
-                    smoothFactor={2.0} 
-                    positions={item.map(point => [point[1],point[0]])} 
-                    key={idx+idx2} 
-                  />
-                });
-              })};
-            </LayerGroup>
+          <LayersControl.Overlay name="Tracks" checked>
+            <Tracks tracks={tracks} />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Huts">
-            <LayerGroup>
-              <MarkerClusterGroup chunkedLoading>
-                <Huts huts={huts} />
-              </MarkerClusterGroup>
-            </LayerGroup>
-          </LayersControl.Overlay>
+            <LayersControl.Overlay name="Huts" checked>
+              <Huts huts={huts} />
+            </LayersControl.Overlay>
         </LayersControl>
         {/* <MapEvents /> */}
       </MapContainer>
