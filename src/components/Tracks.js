@@ -14,7 +14,7 @@ const Tracks = ({ tracks }) => {
             key={idx+idx2} 
           />
         });
-      })};
+      })}
     </LayerGroup>
   )
 }

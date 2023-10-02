@@ -19,6 +19,18 @@
   color: #fff !important;
 }
 
+.leaflet-control-layers {
+  display: none;
+}
+
 .leaflet-control-layers-expanded {
   font-family: 'Lato', sans-serif;
 }
+
+/* .MuiToggleButton-root {
+  color: white !important;
+}
+
+.Mui-selected {
+  background-color: #386cc7 !important;
+} */

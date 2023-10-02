@@ -3,8 +3,54 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, LayerGroup, LayersControl, Polygon, useMapEvents, Polyline, CircleMarker} from 'react-leaflet';
 import React, { useState, useEffect } from 'react';
 
+import Public from './components/Public';
 import Tracks from './components/Tracks';
 import Huts from './components/Huts';
+import Hunting from './components/Hunting';
+import Menu from './components/Menu';
+
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#156064',
+      contrastText: '#fff',
+      icon: '#fff'
+    },
+    secondary: {
+      main: '#EE6352',
+      contrastText: '#fff'
+    },
+  },
+  typography: {
+    fontFamily: [
+      'Lato',
+      'Roboto'
+    ].join(','),
+  },
+  components: {
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          background: '#156064'
+        }
+      }
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: '#bbb',
+          "&.Mui-selected": {
+            color: "#fff",
+            backgroundColor: '#0e3d40'
+          },
+        }
+      }
+    }
+  },
+});
 
 function App() {
   const LINZTOKEN = "56db51a141764e94b53dfd65c78a2f99";
@@ -22,6 +68,8 @@ function App() {
   const [publicCoords, setPublicCoords] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [huts, setHuts] = useState([]);
+
+  const [mapLayers, setMapLayers] = React.useState([]);
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
@@ -43,71 +91,36 @@ function App() {
     retrieveData();
   }, []);
 
-  // const MapEvents = () => {
-  //   const map = useMapEvents({
-  //     zoomend() {
-  //       if (map.getZoom() > 12) {
-  //         setBaseMap(LINZ50URL);
-  //       } else {
-  //         setBaseMap(LINZ250URL);
-  //       }
-  //     }
-  //   });
-  //   return null;
-  // };
-
   return (
-    <>
-      <MapContainer center={[-37.7833, 175.2833]} zoom={8} scrollWheelZoom={true} preferCanvas={true} >
-        <TileLayer
-          url={GOOGLESATURL}
-        />
+    <ThemeProvider theme={theme}>
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} />
+      <MapContainer 
+        center={[-37.7833, 175.2833]}
+        zoom={8}
+        scrollWheelZoom={true}
+        preferCanvas={true}
+        zoomControl={false}
+        > 
+        <TileLayer url={GOOGLESATURL} /> 
         <LayersControl position="topright">
-          <LayersControl.Overlay name="TOPO50">
-            <TileLayer
-              url={LINZ50URL}
-            />
+          <LayersControl.Overlay name="TOPO50" checked={mapLayers.includes("topo50")}>
+            <TileLayer url={LINZ50URL} />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Hunting Areas">
-            <LayerGroup>
-              {huntingCoords && huntingCoords.map((coords, idx) => {
-                return coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
-                  return <Polygon 
-                    color={"purple"} 
-                    weight={2} 
-                    smoothFactor={2.0} 
-                    positions={item.map(point => [point[1],point[0]])} 
-                    key={idx+idx2}
-                  />
-                })
-              })};
-            </LayerGroup>
+          <LayersControl.Overlay name="Hunting Areas" checked={mapLayers.includes("hunting")}>
+            <Hunting huntingCoords={huntingCoords} />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Public Land">
-            <LayerGroup>
-              {publicCoords && publicCoords.map((coords, idx) => {
-                return coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
-                  return <Polygon 
-                    color={"blue"} 
-                    weight={2} 
-                    smoothFactor={2.0} 
-                    positions={item.map(point => [point[1],point[0]])} 
-                    key={idx+idx2} 
-                  />
-                });
-              })};
-            </LayerGroup>
+          <LayersControl.Overlay name="Public Land" checked={mapLayers.includes("public")}>
+            <Public publicCoords={publicCoords} />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Tracks" checked>
+          <LayersControl.Overlay name="Tracks" checked={mapLayers.includes("tracks")}>
             <Tracks tracks={tracks} />
           </LayersControl.Overlay>
-            <LayersControl.Overlay name="Huts" checked>
-              <Huts huts={huts} />
-            </LayersControl.Overlay>
+          <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
+            <Huts huts={huts} />
+          </LayersControl.Overlay>
         </LayersControl>
-        {/* <MapEvents /> */}
       </MapContainer>
-    </>
+    </ThemeProvider>
   );
 }
 

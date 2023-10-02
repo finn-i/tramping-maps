@@ -19,7 +19,7 @@ const Huts = ({ huts }) => {
               color: '#4c8bf5',
             }}
           />
-        })};
+        })}
       </MarkerClusterGroup>
     </LayerGroup>
   )
