@@ -1,6 +1,9 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, LayerGroup, LayersControl, Polygon, useMapEvents, Polyline, CircleMarker} from 'react-leaflet';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+
 import React, { useState, useEffect } from 'react';
 
 import Public from './components/Public';
@@ -8,9 +11,11 @@ import Tracks from './components/Tracks';
 import Huts from './components/Huts';
 import Hunting from './components/Hunting';
 import Menu from './components/Menu';
+import InfoCard from './components/InfoCard';
 
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
+import zIndex from '@mui/material/styles/zIndex';
 
 const theme = createTheme({
   palette: {
@@ -23,6 +28,9 @@ const theme = createTheme({
       main: '#EE6352',
       contrastText: '#fff'
     },
+    background: {
+      paper: '#1E1E1E',
+    }
   },
   typography: {
     fontFamily: [
@@ -31,6 +39,13 @@ const theme = createTheme({
     ].join(','),
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: '#fff'
+        }
+      }
+    },
     MuiDrawer: {
       styleOverrides: {
         paper: {
@@ -70,19 +85,31 @@ function App() {
   const [huts, setHuts] = useState([]);
 
   const [mapLayers, setMapLayers] = React.useState([]);
+  const [selectedItem, setSelectedItem] = React.useState({});
+
+  const [loading, setLoading] = React.useState(true);
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
-      res => { setHuntingCoords(res.features); }
-    );
-    fetch(PUBLICCOORDSURL).then(res => res.json()).then(
-      res => { setPublicCoords(res.features); }
-    );
-    fetch(TRACKSURL).then(res => res.json()).then(
-      res => { setTracks(res.features); }
-    );
-    fetch(HUTSURL).then(res => res.json()).then(
-      res => { setHuts(res.features); }
+      res => { 
+        setHuntingCoords(res.features); 
+        fetch(PUBLICCOORDSURL).then(res => res.json()).then(
+          res => { 
+            setPublicCoords(res.features); 
+            fetch(TRACKSURL).then(res => res.json()).then(
+              res => { 
+                setTracks(res.features); 
+                fetch(HUTSURL).then(res => res.json()).then(
+                  res => { 
+                    setHuts(res.features); 
+                    setLoading(false);
+                  }
+                );
+              }
+            );
+          }
+        );
+      }
     );
   }
 
@@ -94,6 +121,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} />
+      { loading && 
+        <LinearProgress 
+          aria-busy={true} 
+          color={'primary'} 
+          sx={{zIndex: 5000, position: 'absolute', bottom: 0, width: '100%' }}
+        /> }
+      <InfoCard selectedItem={selectedItem} />
       <MapContainer 
         center={[-37.7833, 175.2833]}
         zoom={8}
@@ -116,7 +150,7 @@ function App() {
             <Tracks tracks={tracks} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
-            <Huts huts={huts} />
+            <Huts huts={huts} setSelectedItem={setSelectedItem} />
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>

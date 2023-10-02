@@ -3,7 +3,12 @@ import { CircleMarker, LayerGroup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 
-const Huts = ({ huts }) => {
+const Huts = ({ huts, setSelectedItem }) => {
+
+  const onHutClick = (hut) => {
+    setSelectedItem(hut);
+  }
+
   return (
     <LayerGroup>
       <MarkerClusterGroup chunkedLoading>
@@ -18,6 +23,7 @@ const Huts = ({ huts }) => {
             polygonOptions={{
               color: '#4c8bf5',
             }}
+            eventHandlers={{ click: () => onHutClick(coords) }}
           />
         })}
       </MarkerClusterGroup>
