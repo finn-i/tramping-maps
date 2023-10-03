@@ -5,12 +5,27 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
-const InfoCard = ({ selectedItem }) => {
+const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
+
+  const disableInfoCard = () => {
+    setShowInfoCard(false);
+  }
+
   return (
-    selectedItem.attributes &&
-    <Card sx={{ maxWidth: 345, position: 'fixed', top: 75, left: 20, zIndex: 450 }} >
-       <CardMedia
+    selectedItem.attributes && showInfoCard &&
+    <Card className={'info-card'} >
+      <IconButton
+        size='large'
+        aria-label='close'
+        onClick={disableInfoCard}
+        sx={{ position: 'absolute', right: 0 }}
+      >
+        <CloseIcon color={'info'} sx={{ position: 'absolute', right: 0 }}/>
+      </IconButton>
+      <CardMedia
         component="img"
         alt="green iguana"
         height="140"
@@ -18,7 +33,10 @@ const InfoCard = ({ selectedItem }) => {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-        {selectedItem.attributes.name}
+          {selectedItem.attributes.name}
+          <Typography variant='subtitle1' color={'#bbb'}>
+            {selectedItem.attributes.place}
+          </Typography>
         </Typography>
         <Typography variant="body2">
           {selectedItem.attributes.facilities}

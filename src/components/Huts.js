@@ -3,9 +3,10 @@ import { CircleMarker, LayerGroup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 
-const Huts = ({ huts, setSelectedItem }) => {
+const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
 
   const onHutClick = (hut) => {
+    setShowInfoCard(true);
     setSelectedItem(hut);
   }
 

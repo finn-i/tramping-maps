@@ -46,3 +46,12 @@
 .Mui-selected {
   background-color: #386cc7 !important;
 } */
+
+.info-card {
+  max-width: 345px;
+  position: fixed;
+  top: 5vh;
+  left: 1vw;
+  z-index: 450;
+  /* resize: both; */
+}

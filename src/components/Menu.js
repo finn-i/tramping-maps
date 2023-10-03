@@ -3,12 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { Divider, Drawer } from '@mui/material';
 import PublicIcon from '@mui/icons-material/Public';
 import HikingIcon from '@mui/icons-material/Hiking';
@@ -16,10 +14,7 @@ import MapIcon from '@mui/icons-material/Map';
 import PetsIcon from '@mui/icons-material/Pets';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import CircularProgress from '@mui/material/CircularProgress';
-import LinearProgress from '@mui/material/LinearProgress';
 import Switch from '@mui/material/Switch';
-
 
 const drawerWidth = 280;
 
@@ -38,7 +33,6 @@ const Menu = ({ mapLayers, setMapLayers }) => {
   };
 
   const layerChange = (event, newLayers) => {
-    console.log(newLayers)
     setMapLayers(newLayers);
   };
 
@@ -70,16 +64,16 @@ const Menu = ({ mapLayers, setMapLayers }) => {
         }}
       >
         <Box sx={{
-          display: 'flex'
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexWrap: 'wrap',
         }} >
           <IconButton
             size='large'
-            edge='end'
             aria-label='close'
             onClick={toggleDrawer(false)}
-            // color={'secondary'}
             sx={{
-              color: '#fff'
+              color: '#fff',
             }}
           >
             <CloseIcon />

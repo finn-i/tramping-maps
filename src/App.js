@@ -28,6 +28,9 @@ const theme = createTheme({
       main: '#EE6352',
       contrastText: '#fff'
     },
+    info: {
+      main: '#fff'
+    },
     background: {
       paper: '#1E1E1E',
     }
@@ -56,10 +59,10 @@ const theme = createTheme({
     MuiToggleButton: {
       styleOverrides: {
         root: {
-          color: '#bbb',
+          color: '#ccc',
           "&.Mui-selected": {
             color: "#fff",
-            backgroundColor: '#0e3d40'
+            // backgroundColor: '#0e3d40'
           },
         }
       }
@@ -88,6 +91,7 @@ function App() {
   const [selectedItem, setSelectedItem] = React.useState({});
 
   const [loading, setLoading] = React.useState(true);
+  const [showInfoCard, setShowInfoCard] = React.useState(true);
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
@@ -127,7 +131,7 @@ function App() {
           color={'primary'} 
           sx={{zIndex: 5000, position: 'absolute', bottom: 0, width: '100%' }}
         /> }
-      <InfoCard selectedItem={selectedItem} />
+      <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} />
       <MapContainer 
         center={[-37.7833, 175.2833]}
         zoom={8}
@@ -150,7 +154,7 @@ function App() {
             <Tracks tracks={tracks} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
-            <Huts huts={huts} setSelectedItem={setSelectedItem} />
+            <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
