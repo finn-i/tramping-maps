@@ -151,7 +151,7 @@ function App() {
             <Public publicCoords={publicCoords} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Tracks" checked={mapLayers.includes("tracks")}>
-            <Tracks tracks={tracks} />
+            <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
             <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />

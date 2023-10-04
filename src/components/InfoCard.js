@@ -34,12 +34,14 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.name}
+          {selectedItem.attributes.DESCRIPTION}
           <Typography variant='subtitle1' color={'#bbb'}>
             {selectedItem.attributes.place}
           </Typography>
         </Typography>
         <Typography variant="body2">
           {selectedItem.attributes.facilities}
+          {(selectedItem.attributes.Shape__Length / 1000).toFixed(1)} km
         </Typography>
       </CardContent>
       <CardActions>
