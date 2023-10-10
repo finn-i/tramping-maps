@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { Polygon, LayerGroup } from 'react-leaflet';
 
-const Hunting = ({ huntingCoords }) => {
+const Hunting = ({ huntingCoords, setSelectedItem, setShowInfoCard }) => {
+
+  const onHuntingClick = (hunting) => {
+    console.log(hunting)
+    setShowInfoCard(true);
+    setSelectedItem(hunting);
+  }
+
   return (
     <LayerGroup>
       {huntingCoords && huntingCoords.map((coords, idx) => {
@@ -12,6 +19,7 @@ const Hunting = ({ huntingCoords }) => {
             smoothFactor={2.0} 
             positions={item.map(point => [point[1],point[0]])} 
             key={idx+idx2}
+            eventHandlers={{ click: () => onHuntingClick(coords) }}
           />
         })
       })};

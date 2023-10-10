@@ -31,6 +31,9 @@ const theme = createTheme({
     info: {
       main: '#fff'
     },
+    warning: {
+      main: '#ccc'
+    },
     background: {
       paper: '#1E1E1E',
     }
@@ -146,7 +149,7 @@ function App() {
             <TileLayer url={LINZ50URL} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Hunting Areas" checked={mapLayers.includes("hunting")}>
-            <Hunting huntingCoords={huntingCoords} />
+            <Hunting huntingCoords={huntingCoords}  setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Public Land" checked={mapLayers.includes("public")}>
             <Public publicCoords={publicCoords} />
