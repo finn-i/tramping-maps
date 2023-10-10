@@ -7,6 +7,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import HikingIcon from '@mui/icons-material/Hiking';
+import TerrainIcon from '@mui/icons-material/Terrain';
+import TimerIcon from '@mui/icons-material/Timer';
+import PlaceIcon from '@mui/icons-material/Place';
+import Chip from '@mui/material/Chip';
+
 
 const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
@@ -14,9 +20,8 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
     setShowInfoCard(false);
   }
 
-  return (
-    selectedItem.attributes && showInfoCard &&
-    <Card className={'info-card'} >
+  const showHutContent = (selectedItem) => (
+    <>
       <IconButton
         size='large'
         aria-label='close'
@@ -35,18 +40,57 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.name}
           {selectedItem.attributes.DESCRIPTION}
-          <Typography variant='subtitle1' color={'#bbb'}>
-            {selectedItem.attributes.place}
-          </Typography>
         </Typography>
+        <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.place} variant="outlined" color="info"/>
         <Typography variant="body2">
           {selectedItem.attributes.facilities}
-          {(selectedItem.attributes.Shape__Length / 1000).toFixed(1)} km
         </Typography>
       </CardContent>
       <CardActions>
         <Button size="small" variant="outlined" color='secondary' href={selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
       </CardActions>
+    </>
+  );
+
+  const showTrackContent = (selectedItem) => (
+    <>
+      <IconButton
+        size='large'
+        aria-label='close'
+        onClick={disableInfoCard}
+        sx={{ position: 'absolute', right: 0, margin: 0.5 }}
+      >
+        <CloseIcon color={'info'} sx={{ position: 'absolute', right: 0 }}/>
+      </IconButton>
+      <CardMedia
+        component="img"
+        alt="green iguana"
+        height="140"
+        image={selectedItem.attributes.introductionThumbnail}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {selectedItem.attributes.name}
+        </Typography>
+        <Chip icon={<TerrainIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.difficulty} variant="outlined" color="info"/>
+        <Chip icon={<TimerIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.completionTime} variant="outlined" color="info"/>
+        <Chip icon={<HikingIcon />} sx={{marginRight: 1, marginBottom: 1}} label={(selectedItem.attributes.Shape__Length / 1000).toFixed(1) + "km"} variant="outlined" color="info"/>
+        <Typography variant="body2">
+          {selectedItem.attributes.introduction}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" variant="outlined" color='secondary' href={selectedItem.attributes.walkingAndTrampingWebPage} target='_blank'>Learn More</Button>
+      </CardActions>
+    </>
+  );
+  
+
+  return (
+    selectedItem.attributes && showInfoCard &&
+    <Card className={'info-card'} >
+      {selectedItem.attributes.facilities && showHutContent(selectedItem)}
+      {selectedItem.attributes.completionTime && showTrackContent(selectedItem)}
     </Card>
   );
 }

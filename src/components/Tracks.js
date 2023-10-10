@@ -6,6 +6,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
   const [lineColor, setLineColor] = useState('#4c8bf5');
 
   const onTrackClick = (track) => {
+    console.log(track)
     setShowInfoCard(true);
     setSelectedItem(track);
   }
