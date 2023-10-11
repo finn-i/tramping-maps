@@ -10,23 +10,27 @@ const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
     setSelectedItem(hut);
   }
 
+  const hutPoints = React.useMemo(() => { 
+    return huts && huts.map((coords, idx) => {
+      return <CircleMarker 
+        color={"#FFF"}
+        weight={2}
+        fillColor={"#4c8bf5"} 
+        fillOpacity={1.0}  
+        center={[coords.geometry.y, coords.geometry.x]} 
+        key={idx} 
+        polygonOptions={{
+          color: '#4c8bf5',
+        }}
+        eventHandlers={{ click: () => onHutClick(coords) }}
+      />
+    });
+  }, [huts]);
+
   return (
     <LayerGroup>
       <MarkerClusterGroup chunkedLoading>
-        {huts && huts.map((coords, idx) => {
-          return <CircleMarker 
-            color={"#FFF"}
-            weight={2}
-            fillColor={"#4c8bf5"} 
-            fillOpacity={1.0}  
-            center={[coords.geometry.y, coords.geometry.x]} 
-            key={idx} 
-            polygonOptions={{
-              color: '#4c8bf5',
-            }}
-            eventHandlers={{ click: () => onHutClick(coords) }}
-          />
-        })}
+        {hutPoints}
       </MarkerClusterGroup>
     </LayerGroup>
   )

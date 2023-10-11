@@ -152,7 +152,7 @@ function App() {
             <Hunting huntingCoords={huntingCoords}  setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Public Land" checked={mapLayers.includes("public")}>
-            <Public publicCoords={publicCoords} />
+            <Public publicCoords={publicCoords} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Tracks" checked={mapLayers.includes("tracks")}>
             <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
