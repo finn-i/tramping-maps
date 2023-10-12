@@ -1,9 +1,12 @@
 import React, { useState, useMemo } from 'react'
-import { Polyline, LayerGroup } from 'react-leaflet';
+import { MapContainer, Polyline, LayerGroup } from 'react-leaflet';
+import { useMap } from 'react-leaflet/hooks';
 
 const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
 
-  const [lineColor, setLineColor] = useState('#4c8bf5');
+  const lineColor = '#4c8bf5';
+  const hoverColor = '#ffffff';
+  const map = useMap();
 
   const onTrackClick = (track) => {
     console.log(track)
@@ -11,12 +14,16 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
     setSelectedItem(track);
   }
 
-  const handleMouseOver = () => {
-    setLineColor('#ffffff'); // Change the color on hover
+  const handleMouseOver = (e) => {
+    e.target.options.color = hoverColor;
+    const center = map.getCenter();
+    map.panTo(center);
   };
-
-  const handleMouseOut = () => {
-    setLineColor('#4c8bf5'); // Change the color back to the initial color
+  
+  const handleMouseOut = (e) => {
+    e.target.options.color = lineColor;
+    const center = map.getCenter();
+    map.panTo(center);
   };
 
   const trackLines = React.useMemo(() => { 
@@ -28,7 +35,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
           smoothFactor={2.0} 
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2} 
-          eventHandlers={{ click: () => onTrackClick(coords), mouseover: handleMouseOver, mouseout: handleMouseOut}}
+          eventHandlers={{ click: () => onTrackClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)}}
         />
       });
     })
