@@ -4,6 +4,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Slider from '@mui/material/Slider';
+import Collapse from '@mui/material/Collapse';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
@@ -18,13 +21,20 @@ import Switch from '@mui/material/Switch';
 import { useTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import Stack from '@mui/material/Stack';
+
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
+const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [distanceFilter, setDistanceFilter] = React.useState([0,100]);
   const theme = useTheme();
+
+  const handleDistanceFilterChange = (event, newValue) => {
+    setDistanceFilter(newValue);
+  };
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -36,7 +46,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
     setDrawerOpen(open);
   };
 
-  const layerChange = (event, newLayers) => {
+  const layerChange = (e, newLayers) => {
     setMapLayers(newLayers);
   };
 
@@ -46,6 +56,10 @@ const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
     } else {
       setTheme('dark');
     }
+  };
+
+  const handleTrackNameFilterChange = (e) => {
+    setTrackNameFilter(e.target.value);
   };
 
   return (
@@ -72,7 +86,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
-          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start'}
+          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start', overflow: 'hidden'}
         }}
       >
         <Box sx={{
@@ -105,6 +119,23 @@ const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
             Tracks
             <Switch checked={mapLayers.includes('tracks')} color='warning' />
           </ToggleButton>
+          {
+            <Collapse in={mapLayers.includes('tracks')}>
+            <Box sx={{padding: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
+              {/* <Typography variant='subtitle1'>Filter</Typography> */}
+              <TextField sx={{paddingBottom: 1}} label="Search" variant="standard" size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} />
+              <Stack spacing={2} direction="row" alignItems="center">
+                <Typography variant='subtitle1'>Distance:</Typography>
+                <Slider
+                  value={distanceFilter}
+                  onChange={handleDistanceFilterChange}
+                  valueLabelDisplay="auto"
+                  color='secondary'
+                />
+              </Stack>
+            </Box>
+            </Collapse>
+          }
           <ToggleButton value='huts' aria-label='huts' className='menu-item' >
             <HomeIcon color={mapLayers.includes('huts') ? 'warning' : 'primary.contrastText'}/>
             Huts

@@ -127,6 +127,8 @@ function App() {
 
   const [theme, setTheme] = React.useState('dark');
 
+  const [trackNameFilter, setTrackNameFilter] = React.useState('');
+
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
       res => { 
@@ -158,7 +160,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} />
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} />
       { loading && 
         <LinearProgress 
           aria-busy={true} 
@@ -185,7 +187,7 @@ function App() {
             <Public publicCoords={publicCoords} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Tracks" checked={mapLayers.includes("tracks")}>
-            <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
+            <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} trackNameFilter={trackNameFilter} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
             <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
