@@ -5,8 +5,8 @@ import { useMap } from 'react-leaflet/hooks';
 const Hunting = ({ huntingCoords, setSelectedItem, setShowInfoCard }) => {
 
   const map = useMap();
-  const lineColor = 'purple';
-  const hoverColor = '#ffffff';
+  const lineColor = 'aqua';
+  const hoverColor = '#deffff';
 
   const onHuntingClick = (hunting) => {
     setShowInfoCard(true);
@@ -29,9 +29,10 @@ const Hunting = ({ huntingCoords, setSelectedItem, setShowInfoCard }) => {
     return huntingCoords && huntingCoords.map((coords, idx) => {
       return coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
         return <Polygon 
-          color={"purple"} 
-          weight={2} 
-          smoothFactor={2.0} 
+          color={lineColor} 
+          weight={1} 
+          fillOpacity={0.1}
+          // smoothFactor={2.0} 
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2}
           eventHandlers={{ click: () => onHuntingClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e) }}

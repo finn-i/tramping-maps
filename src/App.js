@@ -15,28 +15,31 @@ import InfoCard from './components/InfoCard';
 
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
-import zIndex from '@mui/material/styles/zIndex';
 
-const theme = createTheme({
+const getDesignTokens = (mode) => ({
   palette: {
-    primary: {
-      main: '#156064',
-      contrastText: '#fff',
-      icon: '#fff'
-    },
-    secondary: {
-      main: '#EE6352',
-      contrastText: '#fff'
-    },
-    info: {
-      main: '#fff'
-    },
-    warning: {
-      main: '#ccc'
-    },
-    background: {
-      paper: '#1E1E1E',
-    }
+    mode,
+    ...(mode === 'light'
+      ? {
+          // palette values for light mode
+          primary: {
+            main: '#156064',
+            contrastText: '#fff',
+          },
+          secondary: {
+            main: '#EE6352',
+          }
+        }
+      : {
+        // palette values for dark mode
+        primary: {
+          main: '#121212',
+          contrastText: '#fff',
+        },
+        secondary: {
+          main: '#EE6352',
+        },
+    }),
   },
   typography: {
     fontFamily: [
@@ -44,34 +47,59 @@ const theme = createTheme({
       'Roboto'
     ].join(','),
   },
-  components: {
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: '#fff'
-        }
-      }
-    },
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          background: '#156064'
-        }
-      }
-    },
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          color: '#ccc',
-          "&.Mui-selected": {
-            color: "#fff",
-            // backgroundColor: '#0e3d40'
-          },
-        }
-      }
-    }
-  },
 });
+
+// const theme = createTheme({
+//   palette: {
+//     // mode: 'dark',
+//     primary: {
+//       main: '#156064',
+//       contrastText: '#fff',
+//       icon: '#fff'
+//     },
+//     secondary: {
+//       main: '#EE6352',
+//       contrastText: '#fff'
+//     },
+//     info: {
+//       main: '#fff'
+//     },
+//     warning: {
+//       main: '#ccc'
+//     },
+//     background: {
+//       paper: '#1E1E1E',
+//     }
+//   },
+//   components: {
+//     MuiTypography: {
+//       styleOverrides: {
+//         root: {
+//           color: '#fff'
+//         }
+//       }
+//     },
+//     MuiDrawer: {
+//       styleOverrides: {
+//         paper: {
+//           // background: '#1E1E1E'
+//           background: '#156064'
+//         }
+//       }
+//     },
+//     MuiToggleButton: {
+//       styleOverrides: {
+//         root: {
+//           color: '#ccc',
+//           "&.Mui-selected": {
+//             color: "#fff",
+//             // backgroundColor: '#0e3d40'
+//           },
+//         }
+//       }
+//     }
+//   },
+// });
 
 function App() {
   const LINZTOKEN = "56db51a141764e94b53dfd65c78a2f99";
@@ -96,6 +124,8 @@ function App() {
 
   const [loading, setLoading] = React.useState(true);
   const [showInfoCard, setShowInfoCard] = React.useState(true);
+
+  const [theme, setTheme] = React.useState('dark');
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
@@ -127,12 +157,12 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} />
+    <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} />
       { loading && 
         <LinearProgress 
           aria-busy={true} 
-          color={'primary'} 
+          color={'warning'} 
           sx={{zIndex: 5000, position: 'absolute', bottom: 0, width: '100%' }}
         /> }
       <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} />

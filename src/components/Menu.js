@@ -15,12 +15,16 @@ import PetsIcon from '@mui/icons-material/Pets';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Switch from '@mui/material/Switch';
+import { useTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers }) => {
+const Menu = ({ mapLayers, setMapLayers, setTheme }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const theme = useTheme();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -36,9 +40,17 @@ const Menu = ({ mapLayers, setMapLayers }) => {
     setMapLayers(newLayers);
   };
 
+  const toggleTheme = (e) => {
+    if (theme.palette.mode === 'dark') {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  };
+
   return (
     <>
-      <AppBar >
+      <AppBar enableColorOnDark color={'primary'}>
         <Toolbar variant='dense'>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             NZ Maps
@@ -55,8 +67,8 @@ const Menu = ({ mapLayers, setMapLayers }) => {
         </Toolbar>
       </AppBar>
       <Drawer
-        variant='persistent'
         anchor='right'
+        variant='persistent'
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
@@ -72,9 +84,6 @@ const Menu = ({ mapLayers, setMapLayers }) => {
             size='large'
             aria-label='close'
             onClick={toggleDrawer(false)}
-            sx={{
-              color: '#fff',
-            }}
           >
             <CloseIcon />
           </IconButton>
@@ -87,32 +96,34 @@ const Menu = ({ mapLayers, setMapLayers }) => {
           orientation='vertical'
         >
           <ToggleButton value='topo50' aria-label='topo50' className='menu-item' >
-            <MapIcon color={mapLayers.includes('topo50') ? 'secondary' : '#fff'}/>
+            <MapIcon color={mapLayers.includes('topo50') ? 'warning' : 'primary.contrastText'}/>
             TOPO50
-            <Switch checked={mapLayers.includes('topo50')} color='secondary' />
+            <Switch checked={mapLayers.includes('topo50')} color='warning' />
           </ToggleButton>
           <ToggleButton value='tracks' aria-label='tracks' className='menu-item' >
-            <HikingIcon color={mapLayers.includes('tracks') ? 'secondary' : '#fff'}/>
+            <HikingIcon color={mapLayers.includes('tracks') ? 'warning' : 'primary.contrastText'}/>
             Tracks
-            <Switch checked={mapLayers.includes('tracks')} color='secondary' />
+            <Switch checked={mapLayers.includes('tracks')} color='warning' />
           </ToggleButton>
           <ToggleButton value='huts' aria-label='huts' className='menu-item' >
-            <HomeIcon color={mapLayers.includes('huts') ? 'secondary' : '#fff'}/>
+            <HomeIcon color={mapLayers.includes('huts') ? 'warning' : 'primary.contrastText'}/>
             Huts
-            <Switch checked={mapLayers.includes('huts')} color='secondary' />
+            <Switch checked={mapLayers.includes('huts')} color='warning' />
           </ToggleButton>
           <ToggleButton value='hunting' aria-label='hunting' className='menu-item' >
-            <PetsIcon color={mapLayers.includes('hunting') ? 'secondary' : '#fff'}/>
+            <PetsIcon color={mapLayers.includes('hunting') ? 'warning' : 'primary.contrastText'}/>
             Hunting Areas
-            <Switch checked={mapLayers.includes('hunting')} color='secondary' />
+            <Switch checked={mapLayers.includes('hunting')} color='warning' />
           </ToggleButton>
           <ToggleButton value='public' aria-label='public' className='menu-item' >
-            <PublicIcon color={mapLayers.includes('public') ? 'secondary' : '#fff'}/>
+            <PublicIcon color={mapLayers.includes('public') ? 'warning' : 'primary.contrastText'}/>
             Public Land
-            <Switch checked={mapLayers.includes('public')} color='secondary' />
+            <Switch checked={mapLayers.includes('public')} color='warning' />
           </ToggleButton>
         </ToggleButtonGroup>
-
+        <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
       </Drawer>
     </>
   )

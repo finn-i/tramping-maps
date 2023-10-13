@@ -5,7 +5,7 @@ import { useMap } from 'react-leaflet/hooks';
 const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
 
   const lineColor = '#4c8bf5';
-  const hoverColor = '#ffffff';
+  const hoverColor = '#c4daff';
   const map = useMap();
 
   const onTrackClick = (track) => {
@@ -31,8 +31,9 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard }) => {
       return coords.geometry.paths && coords.geometry.paths.map((item, idx2) => {
         return <Polyline 
           color={lineColor} 
-          weight={4} 
-          smoothFactor={2.0} 
+          weight={5}
+          dashArray={'8, 8'}
+          // smoothFactor={2.0} 
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2} 
           eventHandlers={{ click: () => onTrackClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)}}

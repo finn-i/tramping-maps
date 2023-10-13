@@ -39,9 +39,6 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
           {selectedItem.attributes.facilities}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" variant="outlined" color='secondary' href={selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
-      </CardActions>
     </>
   );
 
@@ -64,9 +61,6 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
           {selectedItem.attributes.introduction}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" variant="outlined" color='secondary' href={selectedItem.attributes.walkingAndTrampingWebPage} target='_blank'>Learn More</Button>
-      </CardActions>
     </>
   );
 
@@ -98,18 +92,16 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
   return (
     selectedItem.attributes && showInfoCard &&
     <Card className={'info-card'} >
-      <IconButton
-        size='large'
-        aria-label='close'
-        onClick={disableInfoCard}
-        sx={{ position: 'absolute', right: 0, margin: 0.5 }}
-      >
-        <CloseIcon color={'info'} sx={{ position: 'absolute', right: 0 }}/>
-      </IconButton>
       {selectedItem.attributes.facilities && showHutContent(selectedItem)}
       {selectedItem.attributes.completionTime && showTrackContent(selectedItem)}
       {selectedItem.attributes.HuntBlockName && showHuntingContent(selectedItem)}
       {selectedItem.attributes.Legislation && showPublicContent(selectedItem)}
+      <CardActions sx={{justifyContent: 'space-between', margin: 1, marginTop: 0}}>
+        {(selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink) && 
+          <Button size="small" variant="outlined" color='warning' href={selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
+        }
+        <Button size="small" variant="outlined" color='warning' onClick={disableInfoCard}>Close</Button>
+      </CardActions>
     </Card>
   );
 }

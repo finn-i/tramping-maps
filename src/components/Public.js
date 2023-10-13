@@ -4,7 +4,7 @@ import { useMap } from 'react-leaflet/hooks';
 
 const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
 
-  const lineColor = 'blue';
+  const lineColor = 'MediumSpringGreen';
   const hoverColor = '#ffffff';
   const map = useMap();
 
@@ -29,9 +29,10 @@ const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
     return publicCoords && publicCoords.map((coords, idx) => {
       return coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
         return <Polygon 
-          color={"blue"} 
-          weight={2} 
-          smoothFactor={2.0} 
+          color={lineColor} 
+          weight={1} 
+          fillOpacity={0.1}
+          // smoothFactor={2.0} 
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2} 
           eventHandlers={{ 

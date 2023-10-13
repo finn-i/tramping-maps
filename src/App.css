@@ -53,5 +53,6 @@
   top: 5vh;
   left: 1vw;
   z-index: 450;
+  overflow-y: auto;
   /* resize: both; */
 }

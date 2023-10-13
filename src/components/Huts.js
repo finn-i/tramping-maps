@@ -6,7 +6,7 @@ import { useMap } from 'react-leaflet/hooks'
 const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
 
   const fillColor = '#4c8bf5';
-  const hoverColor = '#ffffff';
+  const hoverColor = '#c4daff';
   const map = useMap();
 
   const onHutClick = (hut) => {
@@ -29,14 +29,14 @@ const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
   const hutPoints = React.useMemo(() => { 
     return huts && huts.map((coords, idx) => {
       return <CircleMarker 
-        color={"#FFF"}
+        color={"#fff"}
         weight={2}
-        fillColor={"#4c8bf5"} 
+        fillColor={fillColor} 
         fillOpacity={1.0}  
         center={[coords.geometry.y, coords.geometry.x]} 
         key={idx} 
         polygonOptions={{
-          color: '#4c8bf5',
+          color: fillColor,
         }}
         eventHandlers={{ click: () => onHutClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e) }}
       />
