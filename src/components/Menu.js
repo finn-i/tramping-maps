@@ -26,7 +26,7 @@ import Stack from '@mui/material/Stack';
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance }) => {
+const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
@@ -56,14 +56,22 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
   const handleTrackNameFilterChange = (e) => {
     setTrackNameFilter(e.target.value);
   };
+  
+  const handleHutNameFilterChange = (e) => {
+    setHutNameFilter(e.target.value);
+  };
 
-  const handleDistanceFilterChange = (event, newValue) => {
+  const handleDistanceFilterChange = (e, newValue) => {
     setTrackDistanceFilter(newValue);
+  };
+
+  const handleTopoOpacityChange = (e, newValue) => {
+    setTopoOpacity(newValue);
   };
 
   return (
     <>
-      <AppBar enableColorOnDark color={'primary'}>
+      <AppBar enableColorOnDark sx={{background: '#121212'}}>
         <Toolbar variant='dense'>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             NZ Maps
@@ -85,7 +93,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
-          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start', overflow: 'hidden'}
+          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start', overflow: 'hidden', borderLeft: 0}
         }}
       >
         <Box sx={{
@@ -101,7 +109,6 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
             <CloseIcon />
           </IconButton>
         </Box>
-        <Divider />
         <ToggleButtonGroup
           value={mapLayers}
           onChange={layerChange}
@@ -109,20 +116,38 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
           orientation='vertical'
         >
           <ToggleButton value='topo50' aria-label='topo50' className='menu-item' >
-            <MapIcon color={mapLayers.includes('topo50') ? 'warning' : 'primary.contrastText'}/>
-            TOPO50
-            <Switch checked={mapLayers.includes('topo50')} color='warning' />
+            <MapIcon color={mapLayers.includes('topo50') ? 'secondary' : 'primary.contrastText'}/>
+            Topographic
+            <Switch checked={mapLayers.includes('topo50')} color='secondary' />
           </ToggleButton>
+          <Collapse in={mapLayers.includes('topo50')}>
+            <Box sx={{px: 4, py: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
+              {/* <Typography variant='subtitle1'>Filter</Typography> */}
+              <Stack spacing={2} direction='row' alignItems='center'>
+                <Typography variant='subtitle1'>Opacity:</Typography>
+                <Slider
+                  value={topoOpacity}
+                  onChange={handleTopoOpacityChange}
+                  valueLabelDisplay={'auto'}
+                  color={'secondary'}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  valueLabelFormat={(value)=>{return value + '%'}}
+                />
+              </Stack>
+            </Box>
+            </Collapse>
           <ToggleButton value='tracks' aria-label='tracks' className='menu-item' >
-            <HikingIcon color={mapLayers.includes('tracks') ? 'warning' : 'primary.contrastText'}/>
+            <HikingIcon color={mapLayers.includes('tracks') ? 'secondary' : 'primary.contrastText'}/>
             Tracks
-            <Switch checked={mapLayers.includes('tracks')} color='warning' />
+            <Switch checked={mapLayers.includes('tracks')} color='secondary' />
           </ToggleButton>
           {
             <Collapse in={mapLayers.includes('tracks')}>
             <Box sx={{px: 4, py: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
               {/* <Typography variant='subtitle1'>Filter</Typography> */}
-              <TextField sx={{paddingBottom: 1}} label='Search' variant='standard' size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} autoComplete='off'/>
+              <TextField sx={{paddingBottom: 1}} label='Search Tracks' variant='standard' size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} autoComplete='off'/>
               <Stack spacing={2} direction='row' alignItems='center'>
                 <Typography variant='subtitle1'>Distance:</Typography>
                 <Slider
@@ -140,19 +165,27 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
             </Collapse>
           }
           <ToggleButton value='huts' aria-label='huts' className='menu-item' >
-            <HomeIcon color={mapLayers.includes('huts') ? 'warning' : 'primary.contrastText'}/>
+            <HomeIcon color={mapLayers.includes('huts') ? 'secondary' : 'primary.contrastText'}/>
             Huts
-            <Switch checked={mapLayers.includes('huts')} color='warning' />
+            <Switch checked={mapLayers.includes('huts')} color='secondary' />
           </ToggleButton>
+          {
+            <Collapse in={mapLayers.includes('huts')}>
+            <Box sx={{px: 4, py: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
+              {/* <Typography variant='subtitle1'>Filter</Typography> */}
+              <TextField sx={{paddingBottom: 1}} label='Search Huts' variant='standard' size='small' color='secondary' fullWidth onChange={handleHutNameFilterChange} autoComplete='off'/>
+            </Box>
+            </Collapse>
+          }
           <ToggleButton value='hunting' aria-label='hunting' className='menu-item' >
-            <PetsIcon color={mapLayers.includes('hunting') ? 'warning' : 'primary.contrastText'}/>
+            <PetsIcon color={mapLayers.includes('hunting') ? 'secondary' : 'primary.contrastText'}/>
             Hunting Areas
-            <Switch checked={mapLayers.includes('hunting')} color='warning' />
+            <Switch checked={mapLayers.includes('hunting')} color='secondary' />
           </ToggleButton>
           <ToggleButton value='public' aria-label='public' className='menu-item' >
-            <PublicIcon color={mapLayers.includes('public') ? 'warning' : 'primary.contrastText'}/>
+            <PublicIcon color={mapLayers.includes('public') ? 'secondary' : 'primary.contrastText'}/>
             Public Land
-            <Switch checked={mapLayers.includes('public')} color='warning' />
+            <Switch checked={mapLayers.includes('public')} color='secondary' />
           </ToggleButton>
         </ToggleButtonGroup>
         <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>

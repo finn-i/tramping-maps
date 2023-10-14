@@ -26,7 +26,7 @@ const getDesignTokens = (mode) => ({
           },
           secondary: {
             main: '#EE6352',
-          }
+          },
         }
       : { // dark mode
         primary: {
@@ -66,6 +66,7 @@ function App() {
 
   const [mapLayers, setMapLayers] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState({});
+  const [topoOpacity, setTopoOpacity] = React.useState(1);
 
   const [loading, setLoading] = React.useState(true);
   const [showInfoCard, setShowInfoCard] = React.useState(true);
@@ -73,8 +74,9 @@ function App() {
   const [theme, setTheme] = React.useState('dark');
 
   const [trackNameFilter, setTrackNameFilter] = React.useState('');
-  const [trackDistanceFilter, setTrackDistanceFilter] = React.useState([0,100]);
+  const [trackDistanceFilter, setTrackDistanceFilter] = React.useState([0,200]);
   const [maxTrackDistance, setMaxTrackDistance] = React.useState(0);
+  const [hutNameFilter, setHutNameFilter] = React.useState('');
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
@@ -108,7 +110,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} />
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} />
       { loading && 
         <LinearProgress 
           aria-busy={true} 
@@ -124,9 +126,9 @@ function App() {
         zoomControl={false}
         > 
         <TileLayer url={GOOGLESATURL} /> 
-        <LayersControl position="topright">
+        <LayersControl>
           <LayersControl.Overlay name="TOPO50" checked={mapLayers.includes("topo50")}>
-            <TileLayer url={LINZ50URL} />
+            <TileLayer url={LINZ50URL} opacity={topoOpacity} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Hunting Areas" checked={mapLayers.includes("hunting")}>
             <Hunting huntingCoords={huntingCoords}  setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
@@ -138,7 +140,7 @@ function App() {
             <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} trackNameFilter={trackNameFilter} trackDistanceFilter={trackDistanceFilter} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
-            <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
+            <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} hutNameFilter={hutNameFilter}/>
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>

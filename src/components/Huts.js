@@ -3,7 +3,7 @@ import { CircleMarker, LayerGroup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useMap } from 'react-leaflet/hooks'
 
-const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
+const Huts = ({ huts, setSelectedItem, setShowInfoCard, hutNameFilter }) => {
 
   const fillColor = '#4c8bf5';
   const hoverColor = '#c4daff';
@@ -26,9 +26,13 @@ const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
     map.panTo(center);
   }
 
+  const hutPassesNameFilter = (hutName) => {
+    return hutName.toLowerCase().includes(hutNameFilter.toLowerCase()); 
+  };
+
   const hutPoints = React.useMemo(() => { 
     return huts && huts.map((coords, idx) => {
-      return <CircleMarker 
+      return hutPassesNameFilter(coords.attributes.name) && <CircleMarker 
         color={"#fff"}
         weight={2}
         fillColor={fillColor} 
@@ -41,7 +45,7 @@ const Huts = ({ huts, setSelectedItem, setShowInfoCard }) => {
         eventHandlers={{ click: () => onHutClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e) }}
       />
     });
-  }, [huts]);
+  }, [huts, hutNameFilter]);
 
   return (
     <LayerGroup>
