@@ -2,14 +2,13 @@ import React, { useState, useMemo } from 'react'
 import { MapContainer, Polyline, LayerGroup } from 'react-leaflet';
 import { useMap } from 'react-leaflet/hooks';
 
-const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter }) => {
+const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, trackDistanceFilter }) => {
 
   const lineColor = '#4c8bf5';
   const hoverColor = '#c4daff';
   const map = useMap();
 
   const onTrackClick = (track) => {
-    console.log(track)
     setShowInfoCard(true);
     setSelectedItem(track);
   }
@@ -26,13 +25,17 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter }) =
     map.panTo(center);
   };
 
-  const trackPassesFilter = (trackName) => {
+  const trackPassesNameFilter = (trackName) => {
     return trackName.toLowerCase().includes(trackNameFilter.toLowerCase()); 
+  };
+
+  const trackPassesDistanceFilter = (trackDistance) => {
+    return (trackDistance >= trackDistanceFilter[0] && trackDistance <= trackDistanceFilter[1]);
   };
 
   const trackLines = React.useMemo(() => { 
     return tracks && tracks.map((coords, idx) => {
-      return trackPassesFilter(coords.attributes.name) && coords.geometry.paths && coords.geometry.paths.map((item, idx2) => {
+      return trackPassesNameFilter(coords.attributes.name) && trackPassesDistanceFilter(coords.attributes.Shape__Length / 1000) && coords.geometry.paths && coords.geometry.paths.map((item, idx2) => {
         return <Polyline 
           color={lineColor} 
           weight={5}
@@ -44,7 +47,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter }) =
         />
       });
     })
-  }, [tracks, trackNameFilter]);
+  }, [tracks, trackNameFilter, trackDistanceFilter]);
 
   return (
     <LayerGroup>

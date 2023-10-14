@@ -1,8 +1,7 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, LayerGroup, LayersControl, Polygon, useMapEvents, Polyline, CircleMarker} from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl } from 'react-leaflet';
 import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
 
 import React, { useState, useEffect } from 'react';
 
@@ -19,9 +18,8 @@ import { ThemeProvider } from "@mui/material/styles";
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
-    ...(mode === 'light'
+    ...(mode === 'light' // light mode
       ? {
-          // palette values for light mode
           primary: {
             main: '#156064',
             contrastText: '#fff',
@@ -30,8 +28,7 @@ const getDesignTokens = (mode) => ({
             main: '#EE6352',
           }
         }
-      : {
-        // palette values for dark mode
+      : { // dark mode
         primary: {
           main: '#121212',
           contrastText: '#fff',
@@ -48,58 +45,6 @@ const getDesignTokens = (mode) => ({
     ].join(','),
   },
 });
-
-// const theme = createTheme({
-//   palette: {
-//     // mode: 'dark',
-//     primary: {
-//       main: '#156064',
-//       contrastText: '#fff',
-//       icon: '#fff'
-//     },
-//     secondary: {
-//       main: '#EE6352',
-//       contrastText: '#fff'
-//     },
-//     info: {
-//       main: '#fff'
-//     },
-//     warning: {
-//       main: '#ccc'
-//     },
-//     background: {
-//       paper: '#1E1E1E',
-//     }
-//   },
-//   components: {
-//     MuiTypography: {
-//       styleOverrides: {
-//         root: {
-//           color: '#fff'
-//         }
-//       }
-//     },
-//     MuiDrawer: {
-//       styleOverrides: {
-//         paper: {
-//           // background: '#1E1E1E'
-//           background: '#156064'
-//         }
-//       }
-//     },
-//     MuiToggleButton: {
-//       styleOverrides: {
-//         root: {
-//           color: '#ccc',
-//           "&.Mui-selected": {
-//             color: "#fff",
-//             // backgroundColor: '#0e3d40'
-//           },
-//         }
-//       }
-//     }
-//   },
-// });
 
 function App() {
   const LINZTOKEN = "56db51a141764e94b53dfd65c78a2f99";
@@ -128,6 +73,8 @@ function App() {
   const [theme, setTheme] = React.useState('dark');
 
   const [trackNameFilter, setTrackNameFilter] = React.useState('');
+  const [trackDistanceFilter, setTrackDistanceFilter] = React.useState([0,100]);
+  const [maxTrackDistance, setMaxTrackDistance] = React.useState(0);
 
   const retrieveData = () => {
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
@@ -138,6 +85,7 @@ function App() {
             setPublicCoords(res.features); 
             fetch(TRACKSURL).then(res => res.json()).then(
               res => { 
+                setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
                 setTracks(res.features); 
                 fetch(HUTSURL).then(res => res.json()).then(
                   res => { 
@@ -160,7 +108,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} />
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} />
       { loading && 
         <LinearProgress 
           aria-busy={true} 
@@ -187,7 +135,7 @@ function App() {
             <Public publicCoords={publicCoords} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Tracks" checked={mapLayers.includes("tracks")}>
-            <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} trackNameFilter={trackNameFilter} />
+            <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} trackNameFilter={trackNameFilter} trackDistanceFilter={trackDistanceFilter} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
             <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />

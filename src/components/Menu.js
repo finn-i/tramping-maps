@@ -26,15 +26,10 @@ import Stack from '@mui/material/Stack';
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter }) => {
+const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [distanceFilter, setDistanceFilter] = React.useState([0,100]);
   const theme = useTheme();
-
-  const handleDistanceFilterChange = (event, newValue) => {
-    setDistanceFilter(newValue);
-  };
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -60,6 +55,10 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter }) => {
 
   const handleTrackNameFilterChange = (e) => {
     setTrackNameFilter(e.target.value);
+  };
+
+  const handleDistanceFilterChange = (event, newValue) => {
+    setTrackDistanceFilter(newValue);
   };
 
   return (
@@ -121,16 +120,20 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter }) => {
           </ToggleButton>
           {
             <Collapse in={mapLayers.includes('tracks')}>
-            <Box sx={{padding: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
+            <Box sx={{px: 4, py: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
               {/* <Typography variant='subtitle1'>Filter</Typography> */}
-              <TextField sx={{paddingBottom: 1}} label="Search" variant="standard" size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} />
-              <Stack spacing={2} direction="row" alignItems="center">
+              <TextField sx={{paddingBottom: 1}} label='Search' variant='standard' size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} autoComplete='off'/>
+              <Stack spacing={2} direction='row' alignItems='center'>
                 <Typography variant='subtitle1'>Distance:</Typography>
                 <Slider
-                  value={distanceFilter}
+                  value={trackDistanceFilter}
                   onChange={handleDistanceFilterChange}
-                  valueLabelDisplay="auto"
-                  color='secondary'
+                  valueLabelDisplay={'auto'}
+                  color={'secondary'}
+                  max={maxTrackDistance + 1}
+                  min={0}
+                  step={1}
+                  valueLabelFormat={(value)=>{return value + 'km'}}
                 />
               </Stack>
             </Box>
@@ -152,7 +155,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter }) => {
             <Switch checked={mapLayers.includes('public')} color='warning' />
           </ToggleButton>
         </ToggleButtonGroup>
-        <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color="inherit">
+        <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </Drawer>
