@@ -14,12 +14,30 @@ import PlaceIcon from '@mui/icons-material/Place';
 import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import Chip from '@mui/material/Chip';
 
+// import puppeteer from 'puppeteer';
+
 
 const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
   const disableInfoCard = () => {
     setShowInfoCard(false);
   }
+
+  // const puppeteerOptions = {
+  //   headless: false, // Set to false if you want to open and see the robot in action
+  //   devtools: false,
+  // };
+
+  // const getFullResImage = async (url) => {
+  //   console.log('retrieving full-res image...')
+    // const browser = await puppeteer.launch(puppeteerOptions);
+    // const page = await browser.newPage();
+    // await page.goto(url);
+    // const backgroundImage = await page.evaluate(el => window.getComputedStyle(el).backgroundImage, await page.$('.page-hero'));
+    // console.log(backgroundImage);
+    // await browser.close();
+  // }
+  // getFullResImage(selectedItem.attributes.staticLink);
 
   const showHutContent = (selectedItem) => (
     <>
@@ -99,7 +117,7 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
       <CardActions sx={{justifyContent: 'space-between', margin: 1, marginTop: 0}}>
         {(selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink) && 
           <Button size="small" variant="outlined" color='warning' href={selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
-        }
+        } 
         <Button size="small" variant="outlined" color='warning' onClick={disableInfoCard}>Close</Button>
       </CardActions>
     </Card>
