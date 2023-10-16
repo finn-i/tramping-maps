@@ -109,6 +109,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
             <CloseIcon />
           </IconButton>
         </Box>
+        <Typography variant='h6' sx={{pl:2}} color={'#999'}>LAYERS</Typography>
         <ToggleButtonGroup
           value={mapLayers}
           onChange={layerChange}
@@ -133,7 +134,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
                   min={0}
                   max={1}
                   step={0.01}
-                  valueLabelFormat={(value)=>{return value + '%'}}
+                  valueLabelFormat={(value)=>{return parseInt(value*100) + '%'}}
                 />
               </Stack>
             </Box>
@@ -188,6 +189,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
             <Switch checked={mapLayers.includes('public')} color='secondary' />
           </ToggleButton>
         </ToggleButtonGroup>
+        <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>HEADING</Typography>
         <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

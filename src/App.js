@@ -1,6 +1,6 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl, useMapEvents } from 'react-leaflet';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import React, { useState, useEffect } from 'react';
@@ -11,6 +11,7 @@ import Huts from './components/Huts';
 import Hunting from './components/Hunting';
 import Menu from './components/Menu';
 import InfoCard from './components/InfoCard';
+import Toolbar from './components/Toolbar';
 
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
@@ -27,6 +28,9 @@ const getDesignTokens = (mode) => ({
           secondary: {
             main: '#EE6352',
           },
+          background: {
+            paper: '#eee'
+          }
         }
       : { // dark mode
         primary: {
@@ -58,7 +62,7 @@ function App() {
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
-  const [baseMap, setBaseMap] = useState(LINZ250URL);
+  const [currentTopo, setCurrentTopo] = useState(LINZ250URL);
   const [huntingCoords, setHuntingCoords] = useState([]);
   const [publicCoords, setPublicCoords] = useState([]);
   const [tracks, setTracks] = useState([]);
@@ -108,6 +112,22 @@ function App() {
     retrieveData();
   }, []);
 
+  const MapEvents = () => {
+    const map = useMapEvents({
+      zoomend() {
+        if (map.getZoom() > 12) {
+          setCurrentTopo(LINZ50URL);
+        } else {
+          setCurrentTopo(LINZ250URL);
+        }
+      },
+      mousedown(e) {
+        
+      }
+    });
+    return null;
+  };
+
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
       <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} />
@@ -128,7 +148,7 @@ function App() {
         <TileLayer url={GOOGLESATURL} /> 
         <LayersControl>
           <LayersControl.Overlay name="TOPO50" checked={mapLayers.includes("topo50")}>
-            <TileLayer url={LINZ50URL} opacity={topoOpacity} />
+            <TileLayer url={currentTopo} opacity={topoOpacity} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Hunting Areas" checked={mapLayers.includes("hunting")}>
             <Hunting huntingCoords={huntingCoords}  setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} />
@@ -143,6 +163,8 @@ function App() {
             <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} hutNameFilter={hutNameFilter}/>
           </LayersControl.Overlay>
         </LayersControl>
+        <MapEvents />
+        <Toolbar />
       </MapContainer>
     </ThemeProvider>
   );

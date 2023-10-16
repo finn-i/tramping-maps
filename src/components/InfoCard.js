@@ -52,7 +52,7 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
           {selectedItem.attributes.name}
           {selectedItem.attributes.DESCRIPTION}
         </Typography>
-        <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.place} variant="outlined" color="warning" size="small" />
+        <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.place} variant="outlined" color="secondary" size="small" />
         <Typography variant="body2">
           {selectedItem.attributes.facilities}
         </Typography>
@@ -72,9 +72,9 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.name}
         </Typography>
-        <Chip icon={<TerrainIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.difficulty} variant="outlined" color="warning" size="small" />
-        <Chip icon={<TimerIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.completionTime} variant="outlined" color="warning" size="small" />
-        <Chip icon={<HikingIcon />} sx={{marginRight: 1, marginBottom: 1}} label={(selectedItem.attributes.Shape__Length / 1000).toFixed(1) + "km"} variant="outlined" color="warning" size="small" />
+        <Chip icon={<TerrainIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.difficulty} variant="outlined" color="secondary" size="small" />
+        <Chip icon={<TimerIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.completionTime} variant="outlined" color="secondary" size="small" />
+        <Chip icon={<HikingIcon />} sx={{marginRight: 1, marginBottom: 1}} label={(selectedItem.attributes.Shape__Length / 1000).toFixed(1) + "km"} variant="outlined" color="secondary" size="small" />
         <Typography variant="body2">
           {selectedItem.attributes.introduction}
         </Typography>
@@ -88,8 +88,8 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.HuntBlockName}
         </Typography>
-        <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.PermitArea} variant="outlined" color="warning" size="small" />
-        <Chip icon={<SquareFootIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.Ha.toFixed(1) + "ha"} variant="outlined" color="warning" size="small" />
+        <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.PermitArea} variant="outlined" color="secondary" size="small" />
+        <Chip icon={<SquareFootIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.Ha.toFixed(1) + "ha"} variant="outlined" color="secondary" size="small" />
       </CardContent>
     </>
   );
@@ -100,8 +100,8 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.Name}
         </Typography>
-        {selectedItem.attributes.PermitArea && <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.PermitArea} variant="outlined" color="warning" size="small" />}
-        <Chip icon={<SquareFootIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.Recorded_Area.toFixed(1) + "ha"} variant="outlined" color="warning" size="small" />
+        {selectedItem.attributes.PermitArea && <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.PermitArea} variant="outlined" color="secondary" size="small" />}
+        <Chip icon={<SquareFootIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.Recorded_Area.toFixed(1) + "ha"} variant="outlined" color="secondary" size="small" />
       </CardContent>
     </>
   );
@@ -116,9 +116,9 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
       {selectedItem.attributes.Legislation && showPublicContent(selectedItem)}
       <CardActions sx={{justifyContent: 'space-between', margin: 1, marginTop: 0}}>
         {(selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink) && 
-          <Button size="small" variant="outlined" color='warning' href={selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
+          <Button size="small" variant="outlined" color='secondary' href={selectedItem.attributes.walkingAndTrampingWebPage || selectedItem.attributes.staticLink} target='_blank'>Learn More</Button>
         } 
-        <Button size="small" variant="outlined" color='warning' onClick={disableInfoCard}>Close</Button>
+        <Button size="small" variant="outlined" color='secondary' onClick={disableInfoCard}>Close</Button>
       </CardActions>
     </Card>
   );
