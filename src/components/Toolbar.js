@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Fade from '@mui/material/Fade';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 
 import StraightenIcon from '@mui/icons-material/Straighten';
@@ -64,7 +65,7 @@ const Toolbar = ({ }) => {
   }, [measureList]);
 
   const MeasureLayer = () => {
-    const mouseCircle = <CircleMarker center={mouseLocation} color='#fff' radius={6}  />
+    const mouseCircle = <CircleMarker center={mouseLocation} color='#fff' radius={6} />
     const map = useMapEvents({
       mousemove(e) {
         setMouseLocation([e.latlng.lat, e.latlng.lng])
@@ -87,15 +88,18 @@ const Toolbar = ({ }) => {
             </>
           )
         })}
-        <Alert
-          color='info'
-          sx={{position: 'absolute', bottom: 5, zIndex: 500}}
-          action={
-            <Button color='inherit' size='small' variant='outlined' onClick={resetMeasure}>RESET</Button>
-          }
-        >
-          {(measureDistance/1000).toFixed(2)}km
-        </Alert>
+          <Alert
+            color='info'
+            sx={{position: 'absolute', bottom: 5, zIndex: 500}}
+            iconMapping={{
+              success: <StraightenIcon />,
+            }}
+            action={
+              <Button color='inherit' size='small' variant='outlined' onClick={resetMeasure}>RESET</Button>
+            }
+          >
+            {(measureDistance/1000).toFixed(2)}km
+          </Alert>
       </Box>
     )
   }
