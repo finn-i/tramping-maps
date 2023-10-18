@@ -9,6 +9,7 @@ const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
   const map = useMap();
 
   const onPublicClick = (coords) => {
+    console.log(coords)
     setShowInfoCard(true);
     setSelectedItem(coords);
   }
@@ -26,21 +27,24 @@ const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
   };
 
   const areas = React.useMemo(() => { 
-    return publicCoords && publicCoords.map((coords, idx) => {
-      return coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
-        return <Polygon 
-          color={lineColor} 
-          weight={1} 
-          fillOpacity={0.1}
-          // smoothFactor={2.0} 
-          positions={item.map(point => [point[1],point[0]])} 
-          key={idx+idx2} 
-          eventHandlers={{ 
-            click: () => onPublicClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)
-          }}
-        />
+    return publicCoords && publicCoords.map((entry, idx0) => {
+      return entry.map((coords, idx1) => {
+        return coords.attributes.Type !== "MARGINAL_STRIP" && coords.geometry.rings && coords.geometry.rings.map((item, idx2) => {
+          return <Polygon 
+            color={lineColor} 
+            weight={1} 
+            noClip={true}
+            fillOpacity={0.1}
+            smoothFactor={2.0} 
+            positions={item.map(point => [point[1],point[0]])} 
+            key={idx0+idx1+idx2} 
+            eventHandlers={{ 
+              click: () => onPublicClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)
+            }}
+          />
+        });
       });
-    });
+    })
   }, [publicCoords]);
 
   return (

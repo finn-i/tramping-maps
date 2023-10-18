@@ -1,7 +1,6 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, LayersControl, useMapEvents } from 'react-leaflet';
-import LinearProgress from '@mui/material/LinearProgress';
 
 import React, { useState, useEffect } from 'react';
 
@@ -12,6 +11,7 @@ import Hunting from './components/Hunting';
 import Menu from './components/Menu';
 import InfoCard from './components/InfoCard';
 import Toolbar from './components/Toolbar';
+import LoadAlert from './components/LoadAlert';
 
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
@@ -56,8 +56,7 @@ function App() {
   const LINZ250URL = "https://tiles-cdn.koordinates.com/services;key=" + LINZTOKEN + "/tiles/v4/layer=50798/EPSG:3857/{z}/{x}/{y}.png";
   const LINZSATURL = "https://tiles-cdn.koordinates.com/services;key="  + LINZTOKEN + "/tiles/v4/layer=109401/EPSG:3857/{z}/{x}/{y}.png";
   const HUNTINGCOORDSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Recreational_Hunting_Permit_Areas/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
-  const PUBLICCOORDSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Public_Conservation_Land/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
-  // const ALLTRACKSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Tracks/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultType=standard";
+  const PUBLICCOORDSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Public_Conservation_Land/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultType=standard";
   const TRACKSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Walking_Experiences/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultType=standard";
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
@@ -73,6 +72,7 @@ function App() {
   const [topoOpacity, setTopoOpacity] = React.useState(1);
 
   const [loading, setLoading] = React.useState(true);
+  const [loadState, setLoadState] = React.useState('');
   const [showInfoCard, setShowInfoCard] = React.useState(true);
 
   const [theme, setTheme] = React.useState('dark');
@@ -83,26 +83,41 @@ function App() {
   const [hutNameFilter, setHutNameFilter] = React.useState('');
 
   const retrieveData = () => {
+    setLoadState('Hunting Land Data');
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
       res => { 
         setHuntingCoords(res.features); 
-        fetch(PUBLICCOORDSURL).then(res => res.json()).then(
-          res => { 
-            setPublicCoords(res.features); 
-            fetch(TRACKSURL).then(res => res.json()).then(
-              res => { 
-                setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
-                setTracks(res.features); 
-                fetch(HUTSURL).then(res => res.json()).then(
-                  res => { 
-                    setHuts(res.features); 
-                    setLoading(false);
-                  }
-                );
-              }
-            );
-          }
-        );
+        retrievePublicData();
+      }
+    );
+  }
+  let publicArray = [];
+  let offset = 0;
+  const retrievePublicData = () => {
+    setLoadState('Public Land Data');
+    fetch(PUBLICCOORDSURL + "&resultOffset=" + offset).then(res => res.json()).then(
+      res => { 
+        publicArray.push(res.features);
+        if (res.exceededTransferLimit) {
+          offset += 4000;
+          retrievePublicData();
+        } else {
+          setPublicCoords(publicArray);
+          setLoadState('DOC Track Data');
+          fetch(TRACKSURL).then(res => res.json()).then(
+            res => { 
+              setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
+              setTracks(res.features); 
+              setLoadState('DOC Hut Data');
+              fetch(HUTSURL).then(res => res.json()).then(
+                res => { 
+                  setHuts(res.features); 
+                  setLoading(false);
+                }
+              );
+            }
+          );
+        }
       }
     );
   }
@@ -132,11 +147,8 @@ function App() {
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
       <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} />
       { loading && 
-        <LinearProgress 
-          aria-busy={true} 
-          color={'warning'} 
-          sx={{zIndex: 5000, position: 'absolute', bottom: 0, width: '100%' }}
-        /> }
+        <LoadAlert loadState={loadState} />
+        }
       <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} />
       <MapContainer 
         center={[-37.7833, 175.2833]}
