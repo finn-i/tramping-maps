@@ -61,6 +61,8 @@ function App() {
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
+  const PUBLICDATASTRING = "Public Land Data";
+
   const [currentTopo, setCurrentTopo] = useState(LINZ250URL);
   const [huntingCoords, setHuntingCoords] = useState([]);
   const [publicCoords, setPublicCoords] = useState([]);
@@ -93,8 +95,9 @@ function App() {
   }
   let publicArray = [];
   let offset = 0;
+
   const retrievePublicData = () => {
-    setLoadState('Public Land Data');
+    setLoadState(PUBLICDATASTRING);
     fetch(PUBLICCOORDSURL + "&resultOffset=" + offset).then(res => res.json()).then(
       res => { 
         publicArray.push(res.features);
@@ -104,20 +107,28 @@ function App() {
         } else {
           setPublicCoords(publicArray);
           setLoadState('DOC Track Data');
-          fetch(TRACKSURL).then(res => res.json()).then(
-            res => { 
-              setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
-              setTracks(res.features); 
-              setLoadState('DOC Hut Data');
-              fetch(HUTSURL).then(res => res.json()).then(
-                res => { 
-                  setHuts(res.features); 
-                  setLoading(false);
-                }
-              );
-            }
-          );
+          retrieveTrackData();
         }
+      }
+    );
+  }
+
+  const retrieveTrackData = () => {
+    fetch(TRACKSURL).then(res => res.json()).then(
+      res => { 
+        setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
+        setTracks(res.features); 
+        setLoadState('DOC Hut Data');
+        retrieveHutData();
+      }
+    );
+  }
+
+  const retrieveHutData = () => {
+    fetch(HUTSURL).then(res => res.json()).then(
+      res => { 
+        setHuts(res.features); 
+        setLoading(false);
       }
     );
   }

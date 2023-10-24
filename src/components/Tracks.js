@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { MapContainer, Polyline, LayerGroup } from 'react-leaflet';
+import { MapContainer, Polyline, LayerGroup, Tooltip } from 'react-leaflet';
 import { useMap } from 'react-leaflet/hooks';
 
 const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, trackDistanceFilter }) => {
@@ -20,9 +20,11 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
   };
   
   const handleMouseOut = (e) => {
-    e.target.options.color = lineColor;
-    const center = map.getCenter();
-    map.panTo(center);
+    if (!document.getElementsByClassName('info-card')[0].textContent.includes(e.target._tooltip.options.children)) {
+      e.target.options.color = lineColor;
+      const center = map.getCenter();
+      map.panTo(center);
+    }
   };
 
   const trackPassesNameFilter = (trackName) => {
@@ -44,7 +46,11 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2} 
           eventHandlers={{ click: () => onTrackClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)}}
-        />
+        >
+          <Tooltip>
+            {coords.attributes.name}
+          </Tooltip>
+        </Polyline>
       });
     })
   }, [tracks, trackNameFilter, trackDistanceFilter]);
