@@ -74,7 +74,7 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
       <AppBar enableColorOnDark sx={{background: '#121212'}}>
         <Toolbar variant='dense'>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            NZ Maps
+            NZ Outdoor Maps
           </Typography>
           <IconButton
             size='large'

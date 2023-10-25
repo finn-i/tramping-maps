@@ -20,7 +20,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
   };
   
   const handleMouseOut = (e) => {
-    if (!document.getElementsByClassName('info-card')[0].textContent.includes(e.target._tooltip.options.children)) {
+    if (!document.getElementsByClassName('info-card')[0] || !document.getElementsByClassName('info-card')[0].textContent.includes(e.target._tooltip.options.children)) {
       e.target.options.color = lineColor;
       const center = map.getCenter();
       map.panTo(center);

@@ -12,6 +12,8 @@ import TerrainIcon from '@mui/icons-material/Terrain';
 import TimerIcon from '@mui/icons-material/Timer';
 import PlaceIcon from '@mui/icons-material/Place';
 import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import Tooltip from '@mui/material/Tooltip';
 import Chip from '@mui/material/Chip';
 
 // import puppeteer from 'puppeteer';
@@ -19,40 +21,36 @@ import Chip from '@mui/material/Chip';
 
 const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
+  const hutIsRemoved = (hut) => {
+    const removedHutsURL = 'https://www.doc.govt.nz/link/8e30ec824e3f42c3b8da383e3928f491.aspx';
+    if (hut.attributes.staticLink === removedHutsURL) return true;
+    return false;
+  }
+
   const disableInfoCard = () => {
     setShowInfoCard(false);
   }
 
-  // const puppeteerOptions = {
-  //   headless: false, // Set to false if you want to open and see the robot in action
-  //   devtools: false,
-  // };
-
-  // const getFullResImage = async (url) => {
-  //   console.log('retrieving full-res image...')
-    // const browser = await puppeteer.launch(puppeteerOptions);
-    // const page = await browser.newPage();
-    // await page.goto(url);
-    // const backgroundImage = await page.evaluate(el => window.getComputedStyle(el).backgroundImage, await page.$('.page-hero'));
-    // console.log(backgroundImage);
-    // await browser.close();
-  // }
-  // getFullResImage(selectedItem.attributes.staticLink);
-
   const showHutContent = (selectedItem) => (
     <>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image={selectedItem.attributes.introductionThumbnail}
-      />
+      {!selectedItem.attributes.introductionThumbnail.includes('no-photo') &&
+        <CardMedia
+          component="img"
+          alt="green iguana"
+          height="140"
+          image={selectedItem.attributes.introductionThumbnail}
+        />
+      }
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.name}
           {selectedItem.attributes.DESCRIPTION}
         </Typography>
         <Chip icon={<PlaceIcon />} sx={{marginRight: 1, marginBottom: 1}} label={selectedItem.attributes.place} variant="outlined" color="secondary" size="small" />
+        {hutIsRemoved(selectedItem) && 
+        <Tooltip title="Click for Hut Removal Information">
+          <Chip icon={<RemoveCircleIcon />} sx={{marginRight: 1, marginBottom: 1}} label={'Hut Removed'} variant="outlined" color="secondary" size="small" href={selectedItem.attributes.staticLink} target='_blank' onClick={()=> window.open(selectedItem.attributes.staticLink, "_blank")}/>
+        </Tooltip>}
         <Typography variant="body2">
           {selectedItem.attributes.facilities}
         </Typography>
@@ -62,12 +60,14 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
   const showTrackContent = (selectedItem) => (
     <>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image={selectedItem.attributes.introductionThumbnail}
-      />
+      {!selectedItem.attributes.introductionThumbnail.includes('no-photo') &&
+        <CardMedia
+          component="img"
+          alt="green iguana"
+          height="140"
+          image={selectedItem.attributes.introductionThumbnail}
+        />
+      }
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {selectedItem.attributes.name}
