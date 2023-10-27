@@ -1,5 +1,7 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
+import regeneratorRuntime from 'regenerator-runtime/runtime';
+
 import { MapContainer, TileLayer, LayersControl, useMapEvents } from 'react-leaflet';
 
 import React, { useState, useEffect } from 'react';

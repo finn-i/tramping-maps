@@ -15,6 +15,7 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Chip from '@mui/material/Chip';
+import ElevationChart from './ElevationChart';
 
 // import puppeteer from 'puppeteer';
 
@@ -78,6 +79,7 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography variant="body2">
           {selectedItem.attributes.introduction}
         </Typography>
+        {<ElevationChart chartData={selectedItem} />}
       </CardContent>
     </>
   );

@@ -1740,6 +1740,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@kurkle/color@^0.3.0":
+  version "0.3.2"
+  resolved "https://registry.npmjs.org/@kurkle/color/-/color-0.3.2.tgz"
+  integrity sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
@@ -3483,6 +3488,20 @@ char-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/char-regex/-/char-regex-2.0.1.tgz"
   integrity sha512-oSvEeo6ZUD7NepqAat3RqoucZ5SeqLJgOvVIwkafu6IP3V0pO38s/ypdVUmDDK6qIIHNlYHJAKX9E7R7HoKElw==
+
+chart.js@^4.1.1, chart.js@^4.4.0, chart.js@>=3.2.0:
+  version "4.4.0"
+  resolved "https://registry.npmjs.org/chart.js/-/chart.js-4.4.0.tgz"
+  integrity sha512-vQEj6d+z0dcsKLlQvbKIMYFHd3t8W/7L2vfJIbYcfyPcRx92CsHqECpueN8qVGNlKyDcr5wBrYAYKnfu/9Q1hQ==
+  dependencies:
+    "@kurkle/color" "^0.3.0"
+
+chartjs-plugin-zoom@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/chartjs-plugin-zoom/-/chartjs-plugin-zoom-2.0.1.tgz"
+  integrity sha512-ogOmLu6e+Q7E1XWOCOz9YwybMslz9qNfGV2a+qjfmqJYpsw5ZMoRHZBUyW+NGhkpQ5PwwPA/+rikHpBZb7PZuA==
+  dependencies:
+    hammerjs "^2.0.8"
 
 check-types@^11.2.3:
   version "11.2.3"
@@ -5298,6 +5317,11 @@ gzip-size@^6.0.0:
   dependencies:
     duplexer "^0.1.2"
 
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.npmjs.org/hammerjs/-/hammerjs-2.0.8.tgz"
+  integrity sha512-tSQXBXS/MWQOn/RKckawJ61vvsDpCom87JgxiYdGwHdOa0ht0vzUWDlfioofFCRU0L+6NGDt6XzbgoJvZkMeRQ==
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.0.tgz"
@@ -6698,12 +6722,19 @@ launch-editor@^2.6.0:
     picocolors "^1.0.0"
     shell-quote "^1.7.3"
 
+leaflet-topography@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/leaflet-topography/-/leaflet-topography-0.2.1.tgz"
+  integrity sha512-AmycxkLjuIkp9YNPX2jR5nU2sld6xbz5vi3WZ0Vtsr7xNQg5qWDMO0Ej5hRnNnK9cFX6sq5zFIOePGiUCJZtbg==
+  dependencies:
+    xyz-affair "^0.9.1"
+
 leaflet.markercluster@^1.5.3:
   version "1.5.3"
   resolved "https://registry.npmjs.org/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz"
   integrity sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==
 
-leaflet@^1.3.1, leaflet@^1.8.0, leaflet@^1.9.0, leaflet@^1.9.4:
+leaflet@^1.3.1, leaflet@^1.7.1, leaflet@^1.8.0, leaflet@^1.9.0, leaflet@^1.9.4:
   version "1.9.4"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz"
   integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
@@ -8207,6 +8238,11 @@ react-app-polyfill@^3.0.0:
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
 
+react-chartjs-2@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.npmjs.org/react-chartjs-2/-/react-chartjs-2-5.2.0.tgz"
+  integrity sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==
+
 react-dev-utils@^12.0.1:
   version "12.0.1"
   resolved "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-12.0.1.tgz"
@@ -8354,7 +8390,7 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-"react@^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=16.6.0, react@>=16.8.0:
+"react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=16.6.0, react@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -10249,6 +10285,11 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
+
+xyz-affair@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.npmjs.org/xyz-affair/-/xyz-affair-0.9.1.tgz"
+  integrity sha512-wHCEVYBkpnaeol90ileYSSL7u8Hyoq0B/fDeIbK3+v8i1s8pJqCRPiK2JuATc4qHfJR/kqBVBzYxK8RmDcSWXA==
 
 y18n@^5.0.5:
   version "5.0.8"
