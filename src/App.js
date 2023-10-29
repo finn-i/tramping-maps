@@ -85,6 +85,7 @@ function App() {
   const [trackDistanceFilter, setTrackDistanceFilter] = React.useState([0,200]);
   const [maxTrackDistance, setMaxTrackDistance] = React.useState(0);
   const [hutNameFilter, setHutNameFilter] = React.useState('');
+  const [savedItems, setSavedItems] = React.useState([]);
 
   const retrieveData = () => {
     setLoadState('Hunting Land Data');
@@ -158,11 +159,11 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} />
+      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} />
       { loading && 
         <LoadAlert loadState={loadState} />
         }
-      <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} />
+      <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} savedItems={savedItems} setSavedItems={setSavedItems} />
       <MapContainer 
         center={[-37.7833, 175.2833]}
         zoom={8}

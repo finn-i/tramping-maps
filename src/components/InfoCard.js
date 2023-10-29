@@ -15,12 +15,14 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Chip from '@mui/material/Chip';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ElevationChart from './ElevationChart';
 
 // import puppeteer from 'puppeteer';
 
 
-const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
+const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard, savedItems, setSavedItems }) => {
 
   const hutIsRemoved = (hut) => {
     const removedHutsURL = 'https://www.doc.govt.nz/link/8e30ec824e3f42c3b8da383e3928f491.aspx';
@@ -30,6 +32,14 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
   const disableInfoCard = () => {
     setShowInfoCard(false);
+  }
+
+  const toggleSave = (itemName) =>  {
+    if (savedItems.includes(itemName)) {
+      setSavedItems(savedItems => savedItems.filter((val, idx) => val !== itemName));
+    } else {
+      setSavedItems([...savedItems, itemName]);
+    }
   }
 
   const showHutContent = (selectedItem) => (
@@ -61,6 +71,9 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
 
   const showTrackContent = (selectedItem) => (
     <>
+      <IconButton sx={{ position: 'absolute', top: 5, right: 5 }} onClick={() => toggleSave(selectedItem.attributes.name)} color='inherit'>
+        {savedItems.includes(selectedItem.attributes.name) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      </IconButton>
       {!selectedItem.attributes.introductionThumbnail.includes('no-photo') &&
         <CardMedia
           component="img"
@@ -79,7 +92,7 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard }) => {
         <Typography variant="body2">
           {selectedItem.attributes.introduction}
         </Typography>
-        {<ElevationChart chartData={selectedItem} />}
+        {/* {<ElevationChart chartData={selectedItem} />} */}
       </CardContent>
     </>
   );

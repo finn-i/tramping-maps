@@ -21,42 +21,42 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
       token: 'pk.eyJ1Ijoibm9tYWRkIiwiYSI6ImNraHpiang5YzBkajIycG5rcWVubDh4OXQifQ.rKZjs-LZeaGE7lqG-7lZtg'
     };
 
-    track.geometry.paths.map((item, idx) => {
-      let prev = false;
-      item.map(pt => {
-        const latlng = L.latLng(pt[1],pt[0]);
-        if (prev) distArray.push(map.distance(prev, latlng));
-        const promise = L.Topography.getTopography(latlng, options).then((res) => {
-          eleArray.push(Math.round(res.elevation));
-        });
-        promises.push(promise);
-        prev = latlng;
-        // const promise = fetch(elevationURL + "&x=" + pt[0] + "&y=" + pt[1])
-        //   .then(res => res.json())
-        //   .then(res => {
-        //     if (res.rasterQuery.layers[51768].bands[0]) {
-        //       eleArray.push(res.rasterQuery.layers[51768].bands[0].value);
-        //     }
-        //   });
-        // promises.push(promise);
-      });
-    });
+    // track.geometry.paths.map((item, idx) => {
+    //   let prev = false;
+    //   item.map(pt => {
+    //     const latlng = L.latLng(pt[1],pt[0]);
+    //     if (prev) distArray.push(map.distance(prev, latlng));
+    //     const promise = L.Topography.getTopography(latlng, options).then((res) => {
+    //       eleArray.push(Math.round(res.elevation));
+    //     });
+    //     promises.push(promise);
+    //     prev = latlng;
+    //     // const promise = fetch(elevationURL + "&x=" + pt[0] + "&y=" + pt[1])
+    //     //   .then(res => res.json())
+    //     //   .then(res => {
+    //     //     if (res.rasterQuery.layers[51768].bands[0]) {
+    //     //       eleArray.push(res.rasterQuery.layers[51768].bands[0].value);
+    //     //     }
+    //     //   });
+    //     // promises.push(promise);
+    //   });
+    // });
 
-    Promise.all(promises)
-      .then(() => {
-        console.log(eleArray); 
-        console.log(distArray); 
-        track.elevationArray = eleArray;
-        track.distanceArray = distArray;
-        setShowInfoCard(true);
-        setSelectedItem(track);
-      })
-      .catch(error => {
-        console.error("An error occurred:", error);
-      });
+    // Promise.all(promises)
+    //   .then(() => {
+    //     console.log(eleArray); 
+    //     console.log(distArray); 
+    //     track.elevationArray = eleArray;
+    //     track.distanceArray = distArray;
+    //     setShowInfoCard(true);
+    //     setSelectedItem(track);
+    //   })
+    //   .catch(error => {
+    //     console.error("An error occurred:", error);
+    //   });
         
-    // setShowInfoCard(true);
-    // setSelectedItem(track);
+    setShowInfoCard(true);
+    setSelectedItem(track);
   }
 
   const handleMouseOver = (e) => {

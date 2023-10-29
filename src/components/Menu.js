@@ -26,7 +26,7 @@ import Stack from '@mui/material/Stack';
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity }) => {
+const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
@@ -189,7 +189,14 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
             <Switch checked={mapLayers.includes('public')} color='secondary' />
           </ToggleButton>
         </ToggleButtonGroup>
-        <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>HEADING</Typography>
+        <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>FAVOURITES</Typography>
+        <Box sx={{pl:2}}>
+          {savedItems.map((item, idx) => {
+            return <Typography sx={{p:0.5}} key={idx} >
+              {item}
+            </Typography>
+          })}
+        </Box>
         <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

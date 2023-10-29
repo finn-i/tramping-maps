@@ -8,7 +8,7 @@ const ElevationChart = ({ chartData }) => {
 
   const options = {
     bezierCurve: true,
-    tension: 0.5,
+    tension: 0.4,
     scales: {
       y: { type: 'linear', beginAtZero: true },
     },
