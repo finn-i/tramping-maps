@@ -65,6 +65,7 @@ function App() {
 
   const PUBLICDATASTRING = "Public Land Data";
 
+  const [myMap, setMyMap] = useState(null);
   const [currentTopo, setCurrentTopo] = useState(LINZ250URL);
   const [huntingCoords, setHuntingCoords] = useState([]);
   const [publicCoords, setPublicCoords] = useState([]);
@@ -151,7 +152,6 @@ function App() {
         }
       },
       mousedown(e) {
-        
       }
     });
     return null;
@@ -159,7 +159,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} />
+      <Menu myMap={myMap} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} />
       { loading && 
         <LoadAlert loadState={loadState} />
         }
@@ -170,6 +170,7 @@ function App() {
         scrollWheelZoom={true}
         preferCanvas={true}
         zoomControl={false}
+        ref={setMyMap}
         > 
         <TileLayer url={GOOGLESATURL} /> 
         <LayersControl>

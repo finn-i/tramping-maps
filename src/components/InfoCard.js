@@ -34,16 +34,30 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard, savedItems, set
     setShowInfoCard(false);
   }
 
-  const toggleSave = (itemName) =>  {
-    if (savedItems.includes(itemName)) {
-      setSavedItems(savedItems => savedItems.filter((val, idx) => val !== itemName));
+  const toggleSave = (itemObj) =>  {
+    if (isSavedItem(itemObj)) {
+      setSavedItems(savedItems => savedItems.filter((val, idx) => val.name !== itemObj.attributes.name));
     } else {
-      setSavedItems([...savedItems, itemName]);
+      setSavedItems([...savedItems, { name: itemObj.attributes.name, data: itemObj, type: selectedItem.attributes.facilities ? 'hut' : 'track' }]);
     }
   }
 
+  const isSavedItem = (item) => {
+    for (const val of savedItems) {
+      if (val.name.includes(item.attributes.name)) return true;
+    }
+    return false;
+  }
+
+  const saveButton = (item) => ( 
+    <IconButton sx={{ position: 'absolute', top: 5, right: 5 }} onClick={() => toggleSave(item)} color='inherit'>
+      {isSavedItem(item) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+    </IconButton>
+  );
+
   const showHutContent = (selectedItem) => (
     <>
+      {saveButton(selectedItem)}
       {!selectedItem.attributes.introductionThumbnail.includes('no-photo') &&
         <CardMedia
           component="img"
@@ -71,9 +85,7 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard, savedItems, set
 
   const showTrackContent = (selectedItem) => (
     <>
-      <IconButton sx={{ position: 'absolute', top: 5, right: 5 }} onClick={() => toggleSave(selectedItem.attributes.name)} color='inherit'>
-        {savedItems.includes(selectedItem.attributes.name) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-      </IconButton>
+      {saveButton(selectedItem)}
       {!selectedItem.attributes.introductionThumbnail.includes('no-photo') &&
         <CardMedia
           component="img"

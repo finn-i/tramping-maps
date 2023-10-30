@@ -22,11 +22,11 @@ import { useTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Stack from '@mui/material/Stack';
-
+import * as L from "leaflet";
 
 const drawerWidth = 280;
 
-const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems }) => {
+const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
@@ -67,6 +67,12 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
 
   const handleTopoOpacityChange = (e, newValue) => {
     setTopoOpacity(newValue);
+  };
+
+  const handleFavClick = (item) => {
+    if (item.type === 'track') myMap.flyTo(L.latLng(item.data.geometry.paths[0][0][1], item.data.geometry.paths[0][0][0]));
+    else if (item.type === 'hut') myMap.flyTo(L.latLng(item.data.geometry.y, item.data.geometry.x));
+    setSelectedItem(item.data);
   };
 
   return (
@@ -190,13 +196,13 @@ const Menu = ({ mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDist
           </ToggleButton>
         </ToggleButtonGroup>
         <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>FAVOURITES</Typography>
-        <Box sx={{pl:2}}>
+        <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
           {savedItems.map((item, idx) => {
-            return <Typography sx={{p:0.5}} key={idx} >
-              {item}
-            </Typography>
+            return <ToggleButton className={'fav-item'} sx={{p:0.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
+                {item.name}
+              </ToggleButton>
           })}
-        </Box>
+        </ToggleButtonGroup>
         <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
 
+body {
+  margin: 0;
+}
+
 .App {
   text-align: center;
   font-family: 'Lato', sans-serif;
@@ -56,9 +60,15 @@
 .info-card {
   max-width: 345px;
   position: fixed;
-  top: 5vh;
+  top: 6vh;
   left: 1vw;
   z-index: 450;
   overflow-y: auto;
   /* resize: both; */
+}
+
+.fav-item {
+  width: 100%;
+  justify-content: left !important;
+  text-transform: none !important;
 }
