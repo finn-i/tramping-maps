@@ -37,11 +37,15 @@ const getDesignTokens = (mode) => ({
       : { // dark mode
         primary: {
           main: '#121212',
+          // main: '#25210F',
           contrastText: '#fff',
         },
         secondary: {
           main: '#EE6352',
         },
+        background: {
+          // paper: '#25210F'
+        }
     }),
   },
   typography: {

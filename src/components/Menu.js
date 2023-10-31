@@ -77,10 +77,11 @@ const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, tr
 
   return (
     <>
-      <AppBar enableColorOnDark sx={{background: '#121212'}}>
+      <AppBar enableColorOnDark sx={{background: '#25210F'}}>
         <Toolbar variant='dense'>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             NZ Outdoor Maps
+          {/* <img src='logo.png' width={150} /> */}
           </Typography>
           <IconButton
             size='large'
