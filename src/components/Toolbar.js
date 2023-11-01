@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import GpsOffIcon from '@mui/icons-material/GpsOff';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { CircleMarker, Polyline, useMapEvents } from 'react-leaflet';
 
 
@@ -52,6 +54,18 @@ const Toolbar = ({ }) => {
     console.log('resetMeasure')
     setMeasureDistance(0);
     setMeasureList([]);
+  }
+
+  const zoomIn = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    map.zoomIn();
+  }
+
+  const zoomOut = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    map.zoomOut();
   }
 
   useEffect(() => {
@@ -109,7 +123,8 @@ const Toolbar = ({ }) => {
       <ButtonGroup variant='outlined' orientation='vertical' sx={{position: 'absolute', bottom: 0, left: 0, zIndex: 400, background: '#121212', borderRadius: 100, m: 1, py: 0.5 }}>
         <IconButton size='small' onClick={handleGPSClick}>{userLocation ? <GpsFixedIcon color={'secondary'}  /> : <GpsOffIcon />}</IconButton>
         <IconButton size='small' onClick={handleMeasureClick}>{measuring ? <StraightenIcon color={'secondary'}/> : <StraightenIcon/>}</IconButton>
-        <IconButton size='small'>m</IconButton>
+        <IconButton size='small' onClick={zoomIn} ><AddIcon /></IconButton>
+        <IconButton size='small' onClick={zoomOut} ><RemoveIcon /></IconButton>
       </ButtonGroup>
       {userLocation &&
         <CircleMarker center={[userLocation.coords.latitude, userLocation.coords.longitude]} sx={{zIndex: 500}} color={'#fff'} fillColor={'#4c8bf5'} fillOpacity={1} />
