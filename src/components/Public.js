@@ -9,7 +9,6 @@ const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
   const map = useMap();
 
   const onPublicClick = (coords) => {
-    console.log(coords)
     setShowInfoCard(true);
     setSelectedItem(coords);
   }

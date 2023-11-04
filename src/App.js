@@ -67,8 +67,6 @@ function App() {
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
-  const PUBLICDATASTRING = "Public Land Data";
-
   const [myMap, setMyMap] = useState(null);
   const [currentTopo, setCurrentTopo] = useState(LINZ250URL);
   const [huntingCoords, setHuntingCoords] = useState([]);
@@ -82,6 +80,7 @@ function App() {
 
   const [loading, setLoading] = React.useState(true);
   const [loadState, setLoadState] = React.useState('');
+  const [loadedLayers, setLoadedLayers] = React.useState([]);
   const [showInfoCard, setShowInfoCard] = React.useState(true);
 
   const [theme, setTheme] = React.useState('dark');
@@ -92,10 +91,12 @@ function App() {
   const [hutNameFilter, setHutNameFilter] = React.useState('');
   const [savedItems, setSavedItems] = React.useState([]);
 
-  const retrieveData = () => {
-    setLoadState('Hunting Land Data');
+  const retrieveHuntingData = () => {
+    const dataType = 'Hunting Land Data';
+    setLoadState(dataType);
     fetch(HUNTINGCOORDSURL).then(res => res.json()).then(
       res => { 
+        setLoadedLayers((prev) =>[...prev, dataType]);
         setHuntingCoords(res.features); 
         retrievePublicData();
       }
@@ -105,7 +106,8 @@ function App() {
   let offset = 0;
 
   const retrievePublicData = () => {
-    setLoadState(PUBLICDATASTRING);
+    const dataType = 'Public Land Data';
+    setLoadState(dataType);
     fetch(PUBLICCOORDSURL + "&resultOffset=" + offset).then(res => res.json()).then(
       res => { 
         publicArray.push(res.features);
@@ -113,37 +115,41 @@ function App() {
           offset += 4000;
           retrievePublicData();
         } else {
+          setLoadedLayers((prev) =>[...prev, dataType]);
           setPublicCoords(publicArray);
-          setLoadState('DOC Track Data');
-          retrieveTrackData();
+          setLoading(false);
         }
       }
     );
   }
 
   const retrieveTrackData = () => {
+    const dataType = 'DOC Track Data';
+    setLoadState(dataType);
     fetch(TRACKSURL).then(res => res.json()).then(
       res => { 
+        setLoadedLayers((prev) =>[...prev, dataType]);
         setMaxTrackDistance(parseInt(Math.max(...res.features.map(n => n.attributes.Shape__Length / 1000))));
         setTracks(res.features); 
-        setLoadState('DOC Hut Data');
         retrieveHutData();
       }
     );
   }
 
   const retrieveHutData = () => {
+    const dataType = 'DOC Hut Data';
+    setLoadState(dataType);
     fetch(HUTSURL).then(res => res.json()).then(
       res => { 
+        setLoadedLayers((prev) =>[...prev, dataType]);
         setHuts(res.features); 
-        setLoading(false);
+        retrieveHuntingData();
       }
     );
   }
 
   useEffect(() => {
-    console.log("retrieving tracks...")
-    retrieveData();
+    retrieveTrackData();
   }, []);
 
   const MapEvents = () => {
@@ -163,7 +169,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu myMap={myMap} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} />
+      <Menu myMap={myMap} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} loadedLayers={loadedLayers} />
       { loading && 
         <LoadAlert loadState={loadState} />
         }

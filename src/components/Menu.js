@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,9 +26,10 @@ import * as L from "leaflet";
 
 const drawerWidth = 280;
 
-const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem }) => {
+const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem, loadedLayers }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+
   const theme = useTheme();
 
   const toggleDrawer = (open) => (event) => {
@@ -146,13 +147,13 @@ const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, tr
               </Stack>
             </Box>
             </Collapse>
-          <ToggleButton value='tracks' aria-label='tracks' className='menu-item' >
+          <ToggleButton value='tracks' aria-label='tracks' className='menu-item' disabled={!loadedLayers.includes('DOC Track Data')}>
             <HikingIcon color={mapLayers.includes('tracks') ? 'secondary' : 'primary.contrastText'}/>
             Tracks
             <Switch checked={mapLayers.includes('tracks')} color='secondary' />
           </ToggleButton>
-          {
-            <Collapse in={mapLayers.includes('tracks')}>
+          
+          <Collapse in={mapLayers.includes('tracks')}>
             <Box sx={{px: 4, py: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.12)'}}>
               {/* <Typography variant='subtitle1'>Filter</Typography> */}
               <TextField sx={{paddingBottom: 1}} label='Search Tracks' variant='standard' size='small' color='secondary' fullWidth onChange={handleTrackNameFilterChange} autoComplete='off'/>
@@ -170,9 +171,9 @@ const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, tr
                 />
               </Stack>
             </Box>
-            </Collapse>
-          }
-          <ToggleButton value='huts' aria-label='huts' className='menu-item' >
+          </Collapse>
+          
+          <ToggleButton value='huts' aria-label='huts' className='menu-item' disabled={!loadedLayers.includes('DOC Hut Data')}>
             <HomeIcon color={mapLayers.includes('huts') ? 'secondary' : 'primary.contrastText'}/>
             Huts
             <Switch checked={mapLayers.includes('huts')} color='secondary' />
@@ -185,12 +186,12 @@ const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, tr
             </Box>
             </Collapse>
           }
-          <ToggleButton value='hunting' aria-label='hunting' className='menu-item' >
+          <ToggleButton value='hunting' aria-label='hunting' className='menu-item' disabled={!loadedLayers.includes('Hunting Land Data')}>
             <PetsIcon color={mapLayers.includes('hunting') ? 'secondary' : 'primary.contrastText'}/>
             Hunting Areas
             <Switch checked={mapLayers.includes('hunting')} color='secondary' />
           </ToggleButton>
-          <ToggleButton value='public' aria-label='public' className='menu-item' >
+          <ToggleButton value='public' aria-label='public' className='menu-item' disabled={!loadedLayers.includes('Public Land Data')}>
             <PublicIcon color={mapLayers.includes('public') ? 'secondary' : 'primary.contrastText'}/>
             Public Land
             <Switch checked={mapLayers.includes('public')} color='secondary' />
