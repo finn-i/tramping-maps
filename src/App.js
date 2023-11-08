@@ -173,7 +173,7 @@ function App() {
       { loading && 
         <LoadAlert loadState={loadState} />
         }
-      <InfoCard selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} savedItems={savedItems} setSavedItems={setSavedItems} />
+      <InfoCard myMap={myMap} selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} savedItems={savedItems} setSavedItems={setSavedItems} />
       <MapContainer 
         center={[-37.7833, 175.2833]}
         zoom={8}

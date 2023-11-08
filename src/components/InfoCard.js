@@ -18,11 +18,9 @@ import Chip from '@mui/material/Chip';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ElevationChart from './ElevationChart';
+import Snackbar from '@mui/material/Snackbar';
 
-// import puppeteer from 'puppeteer';
-
-
-const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard, savedItems, setSavedItems }) => {
+const InfoCard = ({ myMap, selectedItem, showInfoCard, setShowInfoCard, savedItems, setSavedItems }) => {
 
   const hutIsRemoved = (hut) => {
     const removedHutsURL = 'https://www.doc.govt.nz/link/8e30ec824e3f42c3b8da383e3928f491.aspx';
@@ -31,11 +29,17 @@ const InfoCard = ({ selectedItem, showInfoCard, setShowInfoCard, savedItems, set
   }
 
   const disableInfoCard = () => {
+    if (selectedItem.element) {
+      selectedItem.element.options.color = '#4c8bf5';
+      const center = myMap.getCenter();
+      myMap.panTo(center);
+    }
     setShowInfoCard(false);
   }
 
   const toggleSave = (itemObj) =>  {
     if (isSavedItem(itemObj)) {
+
       setSavedItems(savedItems => savedItems.filter((val, idx) => val.name !== itemObj.attributes.name));
     } else {
       setSavedItems([...savedItems, { name: itemObj.attributes.name, data: itemObj, type: selectedItem.attributes.facilities ? 'hut' : 'track' }]);

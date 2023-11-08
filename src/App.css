@@ -72,3 +72,7 @@ body {
   justify-content: left !important;
   text-transform: none !important;
 }
+
+.leaflet-container {
+  background: #121212 !important;
+}

@@ -13,7 +13,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
   const elevationURL = "https://data.linz.govt.nz/services/query/v1/raster.json/?key=56db51a141764e94b53dfd65c78a2f99&layer=51768";
   const map = useMap();
 
-  const onTrackClick = (track) => {
+  const onTrackClick = (track, e) => {
     let eleArray = [];
     let distArray = [];
     let promises = [];
@@ -56,6 +56,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
     //   });
         
     setShowInfoCard(true);
+    track.element = e.target;
     setSelectedItem(track);
   }
 
@@ -91,7 +92,7 @@ const Tracks = ({ tracks, setSelectedItem, setShowInfoCard, trackNameFilter, tra
           // smoothFactor={2.0} 
           positions={item.map(point => [point[1],point[0]])} 
           key={idx+idx2} 
-          eventHandlers={{ click: () => onTrackClick(coords), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)}}
+          eventHandlers={{ click: (e) => onTrackClick(coords, e), mouseover: (e) => handleMouseOver(e), mouseout: (e) => handleMouseOut(e)}}
         >
           <Tooltip>
             {coords.attributes.name}
