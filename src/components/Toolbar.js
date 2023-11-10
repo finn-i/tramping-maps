@@ -120,7 +120,7 @@ const Toolbar = ({ }) => {
 
   return (
     <>
-      <ButtonGroup variant='outlined' orientation='vertical' sx={{position: 'absolute', bottom: 0, left: 0, zIndex: 400, background: '#121212', borderRadius: 100, m: 1, py: 0.5 }}>
+      <ButtonGroup variant='outlined' orientation='vertical' sx={{position: 'absolute', bottom: 0, left: 0, zIndex: 400, background: (theme) => theme.palette.background.paper, borderRadius: 100, m: 1, py: 0.5 }}>
         <IconButton size='small' onClick={handleGPSClick}>{userLocation ? <GpsFixedIcon color={'secondary'}  /> : <GpsOffIcon />}</IconButton>
         <IconButton size='small' onClick={handleMeasureClick}>{measuring ? <StraightenIcon color={'secondary'}/> : <StraightenIcon/>}</IconButton>
         <IconButton size='small' onClick={zoomIn} ><AddIcon /></IconButton>

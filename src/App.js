@@ -169,7 +169,7 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
-      <Menu myMap={myMap} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} loadedLayers={loadedLayers} />
+      <Menu myMap={myMap} setShowInfoCard={setShowInfoCard} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} loadedLayers={loadedLayers} />
       { loading && 
         <LoadAlert loadState={loadState} />
         }

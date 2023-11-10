@@ -26,7 +26,7 @@ import * as L from "leaflet";
 
 const drawerWidth = 280;
 
-const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem, loadedLayers }) => {
+const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem, loadedLayers }) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
@@ -71,8 +71,12 @@ const Menu = ({ myMap, mapLayers, setMapLayers, setTheme, setTrackNameFilter, tr
   };
 
   const handleFavClick = (item) => {
-    if (item.type === 'track') myMap.flyTo(L.latLng(item.data.geometry.paths[0][0][1], item.data.geometry.paths[0][0][0]));
-    else if (item.type === 'hut') myMap.flyTo(L.latLng(item.data.geometry.y, item.data.geometry.x));
+    setShowInfoCard(true);
+    if (item.type === 'track') {
+      myMap.flyTo(L.latLng(item.data.geometry.paths[0][0][1], item.data.geometry.paths[0][0][0]));
+    } else if (item.type === 'hut') {
+      myMap.flyTo(L.latLng(item.data.geometry.y, item.data.geometry.x));
+    }
     setSelectedItem(item.data);
   };
 
