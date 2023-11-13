@@ -82,9 +82,9 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
 
   return (
     <>
-      <AppBar enableColorOnDark sx={{background: '#25210F'}}>
+      <AppBar enableColorOnDark sx={{background: '#04151F'}}>
         <Toolbar variant='dense'>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1, fontFamily: 'Antic Slab' }}>
             NZ Outdoor Maps
           {/* <img src='logo.png' width={150} /> */}
           </Typography>
@@ -105,7 +105,7 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
-          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start', overflow: 'hidden', borderLeft: 0}
+          sx: {width: drawerWidth, display: 'flex', justifyContent: 'flex-start', overflow: 'hidden'}
         }}
       >
         <Box sx={{
