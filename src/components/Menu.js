@@ -84,7 +84,7 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
     <>
       <AppBar enableColorOnDark sx={{background: '#04151F'}}>
         <Toolbar variant='dense'>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1, fontFamily: 'Antic Slab' }}>
+          <Typography variant='h5' component='div' sx={{ flexGrow: 1, fontFamily: 'Antic Slab' }}>
             NZ Outdoor Maps
           {/* <img src='logo.png' width={150} /> */}
           </Typography>
@@ -204,7 +204,7 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
         <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>FAVOURITES</Typography>
         <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
           {savedItems.map((item, idx) => {
-            return <ToggleButton className={'fav-item'} sx={{p:0.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
+            return <ToggleButton className={'fav-item'} sx={{p:0.5, pl: 1.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
                 {item.name}
               </ToggleButton>
           })}
