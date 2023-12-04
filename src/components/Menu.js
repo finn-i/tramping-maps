@@ -28,7 +28,7 @@ const drawerWidth = 280;
 
 const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTrackNameFilter, trackDistanceFilter, setTrackDistanceFilter, maxTrackDistance, setHutNameFilter, topoOpacity, setTopoOpacity, savedItems, setSavedItems, setSelectedItem, loadedLayers }) => {
 
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(true);
 
   const theme = useTheme();
 
@@ -84,7 +84,7 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
     <>
       <AppBar enableColorOnDark sx={{background: '#04151F'}}>
         <Toolbar variant='dense'>
-          <Typography variant='h5' component='div' sx={{ flexGrow: 1, fontFamily: 'Antic Slab' }}>
+          <Typography variant='h5' component='div' sx={{ flexGrow: 1, fontFamily: 'Antic Slab', userSelect: 'none' }}>
             NZ Outdoor Maps
           {/* <img src='logo.png' width={150} /> */}
           </Typography>
@@ -121,7 +121,7 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
             <CloseIcon />
           </IconButton>
         </Box>
-        <Typography variant='h6' sx={{pl:2}} color={'#999'}>LAYERS</Typography>
+        <Typography variant='h6' sx={{pl:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>LAYERS</Typography>
         <ToggleButtonGroup
           value={mapLayers}
           onChange={layerChange}
@@ -201,14 +201,18 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
             <Switch checked={mapLayers.includes('public')} color='secondary' />
           </ToggleButton>
         </ToggleButtonGroup>
-        <Typography variant='h6' sx={{pl:2, pt:2}} color={'#999'}>FAVOURITES</Typography>
-        <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
-          {savedItems.map((item, idx) => {
-            return <ToggleButton className={'fav-item'} sx={{p:0.5, pl: 1.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
-                {item.name}
-              </ToggleButton>
-          })}
-        </ToggleButtonGroup>
+        {savedItems.length > 0 &&
+          <>
+            <Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>FAVOURITES</Typography>
+            <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
+              {savedItems.map((item, idx) => {
+                return <ToggleButton className={'fav-item'} sx={{p:0.5, pl: 1.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
+                    {item.name}
+                  </ToggleButton>
+              })}
+            </ToggleButtonGroup>
+          </>
+        }
         <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

@@ -63,6 +63,7 @@ function App() {
   const LINZSATURL = "https://tiles-cdn.koordinates.com/services;key="  + LINZTOKEN + "/tiles/v4/layer=109401/EPSG:3857/{z}/{x}/{y}.png";
   const HUNTINGCOORDSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Recreational_Hunting_Permit_Areas/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const PUBLICCOORDSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Public_Conservation_Land/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultType=standard";
+  const PUBLICCOUNTURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Public_Conservation_Land/FeatureServer/0/query?where=1%3D1&outFields=*&returnCountOnly=true&outSR=4326&f=json";
   const TRACKSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Walking_Experiences/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultType=standard";
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
@@ -80,6 +81,7 @@ function App() {
 
   const [loading, setLoading] = React.useState(true);
   const [loadState, setLoadState] = React.useState('');
+  const [loadValue, setLoadValue] = React.useState(0);
   const [loadedLayers, setLoadedLayers] = React.useState([]);
   const [showInfoCard, setShowInfoCard] = React.useState(true);
 
@@ -90,6 +92,10 @@ function App() {
   const [maxTrackDistance, setMaxTrackDistance] = React.useState(0);
   const [hutNameFilter, setHutNameFilter] = React.useState('');
   const [savedItems, setSavedItems] = React.useState([]);
+
+  let publicArray = [];
+  let offset = 0;
+  let publicCount = 0;
 
   const retrieveHuntingData = () => {
     const dataType = 'Hunting Land Data';
@@ -102,12 +108,13 @@ function App() {
       }
     );
   }
-  let publicArray = [];
-  let offset = 0;
 
   const retrievePublicData = () => {
     const dataType = 'Public Land Data';
     setLoadState(dataType);
+    console.log(publicCount)
+    console.log(offset)
+    setLoadValue((offset / publicCount) * 100);
     fetch(PUBLICCOORDSURL + "&resultOffset=" + offset).then(res => res.json()).then(
       res => { 
         publicArray.push(res.features);
@@ -149,6 +156,7 @@ function App() {
   }
 
   useEffect(() => {
+    fetch(PUBLICCOUNTURL).then(res => res.json().then(res => publicCount = res.count));
     retrieveTrackData();
   }, []);
 
@@ -171,7 +179,7 @@ function App() {
     <ThemeProvider theme={createTheme(getDesignTokens(theme))}>
       <Menu myMap={myMap} setShowInfoCard={setShowInfoCard} mapLayers={mapLayers} setMapLayers={setMapLayers} setTheme={setTheme} setTrackNameFilter={setTrackNameFilter} trackDistanceFilter={trackDistanceFilter} setTrackDistanceFilter={setTrackDistanceFilter} maxTrackDistance={maxTrackDistance} setHutNameFilter={setHutNameFilter} topoOpacity={topoOpacity} setTopoOpacity={setTopoOpacity} savedItems={savedItems} setSavedItems={setSavedItems} setSelectedItem={setSelectedItem} loadedLayers={loadedLayers} />
       { loading && 
-        <LoadAlert loadState={loadState} />
+        <LoadAlert loadState={loadState} loadValue={loadValue} />
         }
       <InfoCard myMap={myMap} selectedItem={selectedItem} showInfoCard={showInfoCard} setShowInfoCard={setShowInfoCard} savedItems={savedItems} setSavedItems={setSavedItems} />
       <MapContainer 
