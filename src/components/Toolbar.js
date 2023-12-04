@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 
 import StraightenIcon from '@mui/icons-material/Straighten';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
@@ -121,10 +122,18 @@ const Toolbar = ({ }) => {
   return (
     <>
       <ButtonGroup variant='outlined' orientation='vertical' sx={{position: 'absolute', bottom: 0, left: 0, zIndex: 400, background: (theme) => theme.palette.background.paper, borderRadius: 100, m: 1, py: 0.5 }}>
-        <IconButton size='small' onClick={handleGPSClick}>{userLocation ? <GpsFixedIcon color={'secondary'}  /> : <GpsOffIcon />}</IconButton>
-        <IconButton size='small' onClick={handleMeasureClick}>{measuring ? <StraightenIcon color={'secondary'}/> : <StraightenIcon/>}</IconButton>
-        <IconButton size='small' onClick={zoomIn} ><AddIcon /></IconButton>
-        <IconButton size='small' onClick={zoomOut} ><RemoveIcon /></IconButton>
+        <Tooltip placement={'right'} disableInteractive title="Toggle User Location">
+          <IconButton size='small' onClick={handleGPSClick}>{userLocation ? <GpsFixedIcon color={'secondary'}  /> : <GpsOffIcon />}</IconButton>
+        </Tooltip>
+        <Tooltip placement={'right'} disableInteractive title="Toggle Measure Tool">
+          <IconButton size='small' onClick={handleMeasureClick}>{measuring ? <StraightenIcon color={'secondary'}/> : <StraightenIcon/>}</IconButton>
+        </Tooltip>
+        <Tooltip placement={'right'} disableInteractive title="Zoom In">
+          <IconButton size='small' onClick={zoomIn} ><AddIcon /></IconButton>
+        </Tooltip>
+        <Tooltip placement={'right'} disableInteractive title="Zoom Out">
+          <IconButton size='small' onClick={zoomOut} ><RemoveIcon /></IconButton>
+        </Tooltip>
       </ButtonGroup>
       {userLocation &&
         <CircleMarker center={[userLocation.coords.latitude, userLocation.coords.longitude]} sx={{zIndex: 500}} color={'#fff'} fillColor={'#4c8bf5'} fillOpacity={1} />

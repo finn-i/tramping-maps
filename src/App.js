@@ -54,6 +54,16 @@ const getDesignTokens = (mode) => ({
       'Roboto'
     ].join(','),
   },
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: '#04151F',
+          // border: '1px solid #dadde9',
+        },
+      },
+    },
+  },
 });
 
 function App() {
