@@ -234,6 +234,51 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Tooltip>
+
+        <Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>DEER DISTRIBUTION</Typography>
+        <ToggleButtonGroup
+          value={mapLayers}
+          onChange={layerChange}
+          aria-label='text formatting'
+          orientation='vertical'
+        >
+          <Tooltip placement={'left'} disableInteractive title="Toggle Red Deer Distribution">
+            <ToggleButton value='red' aria-label='red' className='menu-item' >
+              Red
+              <Switch checked={mapLayers.includes('red')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip placement={'left'} disableInteractive title="Toggle Fallow Deer Distribution">
+            <ToggleButton value='fallow' aria-label='fallow' className='menu-item' >
+              Fallow
+              <Switch checked={mapLayers.includes('fallow')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip placement={'left'} disableInteractive title="Toggle Sika Deer Distribution">
+            <ToggleButton value='sika' aria-label='sika' className='menu-item' >
+              Sika
+              <Switch checked={mapLayers.includes('sika')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip placement={'left'} disableInteractive title="Toggle Rusa Deer Distribution">
+            <ToggleButton value='rusa' aria-label='rusa' className='menu-item' >
+              Rusa
+              <Switch checked={mapLayers.includes('rusa')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip placement={'left'} disableInteractive title="Toggle Sambar Deer Distribution">
+            <ToggleButton value='sambar' aria-label='sambar' className='menu-item' >
+              Sambar
+              <Switch checked={mapLayers.includes('sambar')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip placement={'left'} disableInteractive title="Toggle White-Tailed Deer Distribution">
+            <ToggleButton value='whitetailed' aria-label='whitetailed' className='menu-item' >
+              White-Tailed
+              <Switch checked={mapLayers.includes('whitetailed')} color='secondary' />
+            </ToggleButton>
+          </Tooltip>
+        </ToggleButtonGroup>
       </Drawer>
     </>
   )

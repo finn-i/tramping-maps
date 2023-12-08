@@ -17,6 +17,7 @@ import LoadAlert from './components/LoadAlert';
 
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
+import DeerDistribution from './components/DeerDistribution';
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -78,12 +79,20 @@ function App() {
   const HUTSURL = "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/DOC_Huts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
   const GOOGLESATURL = "https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
+  const DISTRED = {name: 'red', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/Red_Deer_Distribution_2014/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+  const DISTFALLOW = {name: 'fallow', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/Fallow_Deer_Distribution_2007/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+  const DISTRUSA = {name: 'rusa', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/Rusa_Deer_Distribution_2007/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+  const DISTSAMBAR = {name: 'sambar', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/Sambar_Deer_Distribution_2007/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+  const DISTSIKA = {name: 'sika', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/Sika_Deer_Distribution_2007/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+  const DISTWHITETAILED = {name: 'whitetailed', url: "https://services1.arcgis.com/3JjYDyG3oajxU6HO/arcgis/rest/services/White_Tailed_Deer_Distribution_2007/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"};
+
   const [myMap, setMyMap] = useState(null);
   const [currentTopo, setCurrentTopo] = useState(LINZ250URL);
   const [huntingCoords, setHuntingCoords] = useState([]);
   const [publicCoords, setPublicCoords] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [huts, setHuts] = useState([]);
+  const [deerDistribution, setDeerDistribution] = useState({});
 
   const [mapLayers, setMapLayers] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -122,8 +131,6 @@ function App() {
   const retrievePublicData = () => {
     const dataType = 'Public Land Data';
     setLoadState(dataType);
-    console.log(publicCount)
-    console.log(offset)
     setLoadValue((offset / publicCount) * 100);
     fetch(PUBLICCOORDSURL + "&resultOffset=" + offset).then(res => res.json()).then(
       res => { 
@@ -165,9 +172,23 @@ function App() {
     );
   }
 
+  const retrieveDeerDistribution = () => {
+    [DISTFALLOW, DISTRED, DISTSIKA, DISTRUSA, DISTSAMBAR, DISTWHITETAILED].forEach((item, idx) => {
+      let dataType = item.name;
+      // setLoadState(dataType);
+      fetch(item.url).then(res => res.json()).then(
+        res => { 
+          setLoadedLayers((prev) =>[...prev, dataType]);
+          setDeerDistribution(existing => ({...existing, [item.name]: res.features})); 
+        }
+      );
+    });
+  }
+
   useEffect(() => {
     fetch(PUBLICCOUNTURL).then(res => res.json().then(res => publicCount = res.count));
     retrieveTrackData();
+    retrieveDeerDistribution();
   }, []);
 
   const MapEvents = () => {
@@ -215,7 +236,10 @@ function App() {
             <Tracks tracks={tracks} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} trackNameFilter={trackNameFilter} trackDistanceFilter={trackDistanceFilter} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Huts" checked={mapLayers.includes("huts")}>
-            <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} hutNameFilter={hutNameFilter}/>
+            <Huts huts={huts} setSelectedItem={setSelectedItem} setShowInfoCard={setShowInfoCard} hutNameFilter={hutNameFilter} />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Deer Distribution" checked={mapLayers.includes("red") || mapLayers.includes("fallow") || mapLayers.includes("sika") || mapLayers.includes("rusa") || mapLayers.includes("sambar") || mapLayers.includes("whitetailed")}>
+            <DeerDistribution deerDistribution={deerDistribution} mapLayers={mapLayers} />
           </LayersControl.Overlay>
         </LayersControl>
         <MapEvents />
