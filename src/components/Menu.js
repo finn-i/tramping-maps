@@ -243,37 +243,37 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
           orientation='vertical'
         >
           <Tooltip placement={'left'} disableInteractive title="Toggle Red Deer Distribution">
-            <ToggleButton value='red' aria-label='red' className='menu-item' >
+            <ToggleButton value='red' aria-label='red' className='menu-item' disabled={!loadedLayers.includes('red')} >
               Red
               <Switch checked={mapLayers.includes('red')} color='secondary' />
             </ToggleButton>
           </Tooltip>
           <Tooltip placement={'left'} disableInteractive title="Toggle Fallow Deer Distribution">
-            <ToggleButton value='fallow' aria-label='fallow' className='menu-item' >
+            <ToggleButton value='fallow' aria-label='fallow' className='menu-item' disabled={!loadedLayers.includes('fallow')} >
               Fallow
               <Switch checked={mapLayers.includes('fallow')} color='secondary' />
             </ToggleButton>
           </Tooltip>
           <Tooltip placement={'left'} disableInteractive title="Toggle Sika Deer Distribution">
-            <ToggleButton value='sika' aria-label='sika' className='menu-item' >
+            <ToggleButton value='sika' aria-label='sika' className='menu-item' disabled={!loadedLayers.includes('sika')} >
               Sika
               <Switch checked={mapLayers.includes('sika')} color='secondary' />
             </ToggleButton>
           </Tooltip>
           <Tooltip placement={'left'} disableInteractive title="Toggle Rusa Deer Distribution">
-            <ToggleButton value='rusa' aria-label='rusa' className='menu-item' >
+            <ToggleButton value='rusa' aria-label='rusa' className='menu-item' disabled={!loadedLayers.includes('rusa')} >
               Rusa
               <Switch checked={mapLayers.includes('rusa')} color='secondary' />
             </ToggleButton>
           </Tooltip>
           <Tooltip placement={'left'} disableInteractive title="Toggle Sambar Deer Distribution">
-            <ToggleButton value='sambar' aria-label='sambar' className='menu-item' >
+            <ToggleButton value='sambar' aria-label='sambar' className='menu-item' disabled={!loadedLayers.includes('sambar')} >
               Sambar
               <Switch checked={mapLayers.includes('sambar')} color='secondary' />
             </ToggleButton>
           </Tooltip>
           <Tooltip placement={'left'} disableInteractive title="Toggle White-Tailed Deer Distribution">
-            <ToggleButton value='whitetailed' aria-label='whitetailed' className='menu-item' >
+            <ToggleButton value='whitetailed' aria-label='whitetailed' className='menu-item' disabled={!loadedLayers.includes('whitetailed')} >
               White-Tailed
               <Switch checked={mapLayers.includes('whitetailed')} color='secondary' />
             </ToggleButton>

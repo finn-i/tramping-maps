@@ -34,7 +34,7 @@ const Public = ({ publicCoords, setSelectedItem, setShowInfoCard }) => {
             weight={1} 
             noClip={true}
             fillOpacity={0.1}
-            smoothFactor={2.0} 
+            // smoothFactor={2.0} 
             positions={item.map(point => [point[1],point[0]])} 
             key={idx0+idx1+idx2} 
             eventHandlers={{ 

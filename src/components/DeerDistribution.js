@@ -5,7 +5,7 @@ import { useMap } from 'react-leaflet/hooks';
 const DeerDistribution = ({ deerDistribution, mapLayers }) => {
 
   const map = useMap();
-  const lineColor = '#158f8f';
+  const areaColour = {red: '#8f1515', fallow: '#158f4a', sika: '#8f7b15', rusa: '#158f8f', sambar: '#5e158f', whitetailed: '#8a9fbd'};
   const hoverColor = '#deffff';
 
   const handleMouseOver = (e) => {
@@ -15,7 +15,7 @@ const DeerDistribution = ({ deerDistribution, mapLayers }) => {
   };
   
   const handleMouseOut = (e) => {
-    e.target.options.fillColor = lineColor;
+    e.target.options.fillColor = areaColour[e.target.options.className];
     const center = map.getCenter();
     map.panTo(center);
   };
@@ -26,12 +26,13 @@ const DeerDistribution = ({ deerDistribution, mapLayers }) => {
         return coords.geometry.rings.map((item, idx3) => (
           <Polygon 
             color={hoverColor} 
-            fillColor={lineColor} 
+            fillColor={areaColour[species]} 
             weight={1} 
             fillOpacity={0.15}
             positions={item.map(point => [point[1], point[0]])} 
             key={`${idx}-${idx2}-${idx3}`}
             eventHandlers={{ mouseover: handleMouseOver, mouseout: handleMouseOut }}
+            className={species}
           />
         ));
       }) || [];
