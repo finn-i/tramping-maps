@@ -216,24 +216,6 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
-        
-        {savedItems.length > 0 &&
-          <>
-            <Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>FAVOURITES</Typography>
-            <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
-              {savedItems.map((item, idx) => {
-                return <ToggleButton className={'fav-item'} sx={{p:0.5, pl: 1.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
-                    {item.name}
-                  </ToggleButton>
-              })}
-            </ToggleButtonGroup>
-          </>
-        }
-        <Tooltip placement={'left'} disableInteractive title="Toggle Dark Mode">
-          <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </Tooltip>
 
         <Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>DEER DISTRIBUTION</Typography>
         <ToggleButtonGroup
@@ -279,6 +261,24 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
+
+        {savedItems.length > 0 &&
+          <>
+            <Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>FAVOURITES</Typography>
+            <ToggleButtonGroup sx={{px:2}} orientation='vertical'>
+              {savedItems.map((item, idx) => {
+                return <ToggleButton className={'fav-item'} sx={{p:0.5, pl: 1.5}} key={idx} onClick={() => handleFavClick(item)} value='public' aria-label='public' >
+                    {item.name}
+                  </ToggleButton>
+              })}
+            </ToggleButtonGroup>
+          </>
+        }
+        <Tooltip placement={'left'} disableInteractive title="Toggle Dark Mode">
+          <IconButton sx={{ position: 'absolute', bottom: 5, left: 5 }} onClick={toggleTheme} color='inherit'>
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </Tooltip>
       </Drawer>
     </>
   )
