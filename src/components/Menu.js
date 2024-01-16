@@ -225,7 +225,9 @@ const Menu = ({ myMap, setShowInfoCard, mapLayers, setMapLayers, setTheme, setTr
           </Tooltip>
         </ToggleButtonGroup>
 
-        <Button variant="contained" disableElevation onClick={toggleDeerOpen} endIcon={deerOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} sx={{justifyContent: 'flex-start'}}><Typography variant='h6' sx={{pl:2, pt:2, fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>DEER DISTRIBUTION</Typography></Button>
+        <Button variant="contained" disableElevation onClick={toggleDeerOpen} endIcon={deerOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} sx={{justifyContent: 'flex-start'}}>
+          <Typography variant='h6' py={1} sx={{fontFamily: 'Antic Slab', userSelect: 'none'}} color={'#999'}>DEER DISTRIBUTION</Typography>
+        </Button>
         <Collapse in={deerOpen} >
           <ToggleButtonGroup
             value={mapLayers}
