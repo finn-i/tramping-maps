@@ -2,7 +2,7 @@
 # New Zealand Tramping and Hunting Maps
 
 <!-- Project Description -->
-A map viewer web application combining numerous data sources from ARCGIS and the Department of Conservation (DOC) to visualise DOC tracks, huts, public land, hunting areas, deer species distribution, and topographic mapping layers in New Zealand. Temporarily hoster [here](https://tramping-maps.vercel.app).
+A map viewer web application combining numerous data sources from ARCGIS and the Department of Conservation (DOC) to visualise DOC tracks, huts, public land, hunting areas, deer species distribution, and topographic mapping layers in New Zealand. Currently hosted [here](https://tramping-maps.vercel.app).
 
 ![Screenshot of Tramping Maps](https://i.imgur.com/FNvaejQ.png)
 
